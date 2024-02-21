@@ -1,7 +1,7 @@
  name: sync to gitee
- on:
-   push:
-
+#Due to incomplete environment development, CI build is disabled.
+ #on: [push]
+ on: []
  jobs:
    deploy:
      runs-on: ubuntu-latest
