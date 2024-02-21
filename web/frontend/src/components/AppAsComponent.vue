@@ -6,9 +6,6 @@
     <FileUploader @file-list-updated="updateProperties" />
     <InfoDisplay :fileProperties="fileProperties" />
   </div>
-  <footer>
-    <p>&copy; 2024 哈尔滨工程大学</p>
-  </footer>
 </template>
 
 <script>

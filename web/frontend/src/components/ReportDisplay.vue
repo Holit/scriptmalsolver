@@ -1,33 +1,30 @@
 <template>
     <div>
-        <p>{{ parma }}</p>
+      <h1>File Hash: {{ file_hash }}</h1>
+      <!--
+        TODO:
+        后端：收到文件后，放入队列，等待扫描，生成json报告并存储。
+        前端：通知后端，读取json报告。
+      -->
     </div>
-    <div>
-        <h2>报告详情</h2>
-        <p>是否存在风险：{{ report.risk ? '是' : '否' }}</p>
-        <p>文件类型：{{ report.type }}</p>
-        <p>架构：{{ report.architecture }}</p>
-        <p>家族：{{ report.family || '未知' }}</p>
-    </div>
-    <router-view/>
-</template>
+  </template>
   
 <script>
 
 export default {
-    data() {
-        return {
-            hash: null
-        };
-    },
     created() {
         // 在页面创建时获取路由参数中的哈希值
-        this.hash = this.$route.params.hash;
+        this.file_hash = this.$route.params.hash;
+    },
+    data() {
+        return {
+        file_hash: '' // 初始化 file_hash 属性
+        };
     },
     props: {
         report: {
             type: Object,
-            required: true
+            required: false
         }
     },
 }

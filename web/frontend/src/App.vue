@@ -7,9 +7,9 @@
     <!-- <FileUploader @file-list-updated="updateProperties" />
     <InfoDisplay :fileProperties="fileProperties" /> -->
   </div>
-  <!-- <footer>
+  <footer>
     <p>&copy; 2024 哈尔滨工程大学</p>
-  </footer> -->
+  </footer>
 </template>
 
 <script>
@@ -76,7 +76,7 @@ nav a.active {
 .RouterView {
   margin-top: 20px;
 }
-
+*/
 footer {
   background-color: #333;
   color: white;
@@ -86,5 +86,5 @@ footer {
   left: 0;
   bottom: 0;
   width: 100%;
-} */
+} 
 </style>
