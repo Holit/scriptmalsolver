@@ -1,7 +1,8 @@
 name: PyPI 📦 Distribution
+#Due to incomplete environment development, CI build is disabled.
 
-on: [push]
-
+#on: [push]
+on: []
 jobs:
   build:
     runs-on: ubuntu-latest

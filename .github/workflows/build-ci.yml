@@ -1,5 +1,7 @@
 name: Run tests
-on: [push, pull_request]
+#Due to incomplete environment development, CI build is disabled.
+#on: [push, pull_request]
+on: []
 env:
   CI: true
 jobs:
