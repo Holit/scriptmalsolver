@@ -10,21 +10,23 @@
 .venv
 
 # cache and misc
-qiling.egg-info/
+scanner/qiling.egg-info/
 __pycache__/
 *.py[cod]
 build
 dist
 
 # test and logs
-tests/mac_test_elf.sh
-jexamples/
-logs/
-log/
-test_qlog/
-log_test/
-qlog/
-qlogs/
+scaner/tests/mac_test_elf.sh
+scaner/jexamples/
+scaner/logs/
+scaner/log/
+scaner/test_qlog/
+scaner/log_test/
+scaner/qlog/
+scaner/qlogs/
+scanner/tests/output.txt
+scanner/tests/testtest_*
 test_syscall_*.txt
 *.no.py
 .gitkeep
@@ -35,8 +37,6 @@ test.file
 *.o
 core
 *.perf
-tests/output.txt
-tests/testtest_*
 
 #node_modules
 *node_modules
