@@ -130,5 +130,5 @@ CORS_ALLOWED_ORIGINS = [
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# 只允许本地访问
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']  # 允许本地主机访问
+# 只允许本地主机访问
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '[::1]']

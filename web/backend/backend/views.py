@@ -2,6 +2,7 @@
 import hashlib
 from datetime import datetime
 from django.http import JsonResponse
+from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
@@ -58,3 +59,8 @@ def type_scan(request):
 def analyze_file(request):
     status = 500
     return JsonResponse({'error': 'Not-Implemented!'})
+
+@csrf_exempt
+def hello_world(request):
+    html = "<html><body>Hello World!</body></html>"
+    return HttpResponse(html)

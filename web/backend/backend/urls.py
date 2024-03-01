@@ -17,8 +17,10 @@ from django.urls import path
 from .views import upload_file
 from .views import type_scan
 from .views import analyze_file
+from .views import hello_world
 
 urlpatterns = [
+    path('',hello_world, name='hello_world'),
     path('api/upload/', upload_file, name='upload_file'),
     path('api/type_scan/',type_scan,name ='type_scan'),
     path('api/analyze/',analyze_file,name = 'analyze_file')

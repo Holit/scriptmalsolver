@@ -1,7 +1,8 @@
-echo 鍚姩娴嬭瘯鐜...
-cd web
-echo 鍚姩Django鍚庣
+echo 启动测试环境...
+cd web/backend
+echo 启动Django后端
 start "Django Backend Terminal" cmd /c  py manage.py runserver
+cd ..
 cd frontend
-echo 鍚姩vue鍓嶇
+echo 启动vue前端
 start "Vue Frontend Terminal" cmd /c  npm run dev
