@@ -38,6 +38,10 @@ test.file
 core
 *.perf
 
+#rootfs
+scanner/examples/rootfs/
+*.dll
+
 #node_modules
 *node_modules
 web/backend/node_modules
