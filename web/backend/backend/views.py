@@ -9,6 +9,8 @@ import sys
 sys.path.append("E:\Projects\scriptmalsolver\qiling")
 from qiling import * 
 
+import json
+
 @csrf_exempt
 def upload_file(request):
     if request.method == 'POST' and request.FILES:
@@ -70,9 +72,11 @@ def hello_world(request):
     return HttpResponse(html)
 
 def test_qiling(request):
-    argv = ['D:\\tmp\\hello.exe']
-    rootfs = r'E:\Projects\scriptmalsolver\qiling\examples\rootfs\x8664_windows'
-    ql = Qiling(argv=argv, rootfs=rootfs)
-    result = ql.run()
+    argv = [r'E:\Projects\scriptmalsolver\rootfs\x8664_windows\bin\hello.exe']
+    rootfs = r'E:\Projects\scriptmalsolver\rootfs\x8664_windows'
+
+    result = ""
+    ql = Qiling(argv=argv, rootfs=rootfs, log_file=result)
+    ql.run()
     return JsonResponse({'module_name':Qiling.__name__,
                          'result' : result})
