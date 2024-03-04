@@ -123,7 +123,7 @@ STATIC_URL = '/static/'
 
 #允许跨域请求
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8080',
+    'http://localhost:8000',
     # 其他允许的来源
 ]
 # 添加以下设置用于文件上传

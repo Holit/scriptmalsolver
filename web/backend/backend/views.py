@@ -5,6 +5,10 @@ from django.http import JsonResponse
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
+import sys
+sys.path.append("E:\Projects\scriptmalsolver\qiling")
+from qiling import * 
+
 @csrf_exempt
 def upload_file(request):
     if request.method == 'POST' and request.FILES:
@@ -64,3 +68,11 @@ def analyze_file(request):
 def hello_world(request):
     html = "<html><body>Hello World!</body></html>"
     return HttpResponse(html)
+
+def test_qiling(request):
+    argv = ['D:\\tmp\\hello.exe']
+    rootfs = r'E:\Projects\scriptmalsolver\qiling\examples\rootfs\x8664_windows'
+    ql = Qiling(argv=argv, rootfs=rootfs)
+    result = ql.run()
+    return JsonResponse({'module_name':Qiling.__name__,
+                         'result' : result})

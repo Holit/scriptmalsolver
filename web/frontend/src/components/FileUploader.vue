@@ -23,8 +23,7 @@ import axios from 'axios';
 export default {
   data() {
     return {
-      fileProperties: [],
-      status: 200
+      fileProperties: []
     }
   },
   methods: {
@@ -48,13 +47,18 @@ export default {
           }
         });
         this.fileProperties = response.data.fileProperties;
-        this.status = 200
         this.$emit('file-list-updated', this.fileProperties);
       } catch (error) {
-        if(error.response.status != 400)
+        if(error.response != undefined)
         {
-          console.error('上传文件时发生错误:', error);
-          this.status = 502
+          if(error.response.status != 400)
+          {
+            console.error('上传文件时发生错误:', error);
+          }
+        }
+        else
+        {
+          console.error('上传文件时发生错误: 未知错误')
         }
       }
     }
