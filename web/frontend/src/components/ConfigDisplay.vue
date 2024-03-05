@@ -1,12 +1,21 @@
 <template>
     <div>
-      <h1>Hello, World!</h1>
+      Config is not done yet
     </div>
   </template>
   
   <script>
   export default {
-    // 组件的逻辑代码可以在这里编写
+    name: 'ConfigDisplay',
+    components: {
+  
+    },
+    data() {
+      return {
+      }
+    },
+    methods: {
+    }
   }
   </script>
   

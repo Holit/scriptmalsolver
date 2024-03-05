@@ -1,32 +1,18 @@
 <template>
-    <header>
-    <h1>在线文件查杀</h1>
-  </header>
-  <div id="fake-app">
-    <FileUploader @file-list-updated="updateProperties" />
-    <InfoDisplay :fileProperties="fileProperties" />
-  </div>
+  Guess what, this page is not done yet!
 </template>
 
 <script>
-import FileUploader from './FileUploader.vue';
-import InfoDisplay from './InfoDisplay.vue';
-
 export default {
-  name: 'AppAsComponent',
+  name: 'SummaryDisplay',
   components: {
-    FileUploader,
-    InfoDisplay
+
   },
   data() {
     return {
-      fileProperties: []
     }
   },
   methods: {
-    updateProperties(newProperties) {
-      this.fileProperties = newProperties;
-    }
   }
 }
 </script>
@@ -84,3 +70,4 @@ footer {
   width: 100%;
 }
 </style>
+./Summary.vue./Submit.vue

@@ -1,13 +1,16 @@
 import { createRouter, createWebHistory } from "vue-router";
 import ReportDisplay from "../components/ReportDisplay.vue";
-import TestDisplay from "../components/TestDisplay.vue";
-import AppAsComponent from '../components/AppAsComponent.vue'
-//import { readonly } from "vue";
+import ConfigDisplay from "../components/ConfigDisplay.vue";
+import SummaryDisplay from '../components/SummaryDisplay.vue';
+import SubmitDisplay from "../components/SubmitDisplay.vue";
 
 const routes = [
-  { path: '/' , name: 'app' , component: AppAsComponent},
-  { path: '/report/:hash', name: 'report', component: ReportDisplay },
-  { path: '/helloworld' , name:'helloworld', component : TestDisplay}
+  { path: '/' , name: 'summary' , component: SummaryDisplay},
+  { path: '/config' , name:'config', component : ConfigDisplay},
+  { path: '/submit', name:'submit', component:SubmitDisplay},
+  { path: '/settings',name:'settings',component:ConfigDisplay},
+
+  { path: '/report/:hash', name: 'report', component: ReportDisplay }
 ]
 
 

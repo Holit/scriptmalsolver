@@ -1,90 +1,101 @@
 <template>
-    <!-- <header>
-    <h1>在线文件查杀</h1>
-  </header> -->
   <div id="app">
+
+    <header>
+      <h1>在线文件查杀</h1>
+    </header>
+    
+    <div class="navbar">
+
+      <div class="navbar-inner">
+            <div class="container" style="width:1170px;">
+              <ul class="nav" style="float:left">
+                <li>
+                  <router-link to="/">概要</router-link> |
+                </li>                  
+                <li>
+                  <router-link to="/details">提交</router-link> |
+                </li>
+              </ul>
+              <ul class="nav" style="float:right">
+                  <li>
+                    <router-link to="/settings">配置</router-link>
+                  </li>
+              </ul>
+            </div>
+      </div>
+    </div>
+
     <router-view></router-view>
-    <!-- <FileUploader @file-list-updated="updateProperties" />
-    <InfoDisplay :fileProperties="fileProperties" /> -->
   </div>
   <footer>
-    <p>&copy; 2024 哈尔滨工程大学</p>
+    <span>©Copyright&nbsp;2024 <a href="https://www.hrbeu.edu.cn">哈尔滨工程大学</a> & <a href="https://www.antiy.cn">安天科技</a> </span>
   </footer>
 </template>
 
 <script>
-// import FileUploader from './components/FileUploader.vue';
-// import InfoDisplay from './components/InfoDisplay.vue';
 
 export default {
   name: 'App',
-//   components: {
-//     FileUploader,
-//     InfoDisplay
-//   },
-//   data() {
-//     return {
-//       fileProperties: []
-//     }
-//   },
-//   methods: {
-//     updateProperties(newProperties) {
-//       this.fileProperties = newProperties;
-//     }
-//   }
+
 }
 </script>
 
-
 <style scoped>
-/* header {
-  background-color: #1f1fc4;
-  color: white;
-  padding: 10px 20px;
+.body{
+  margin: 0 auto; /* 居中显示 */
+  width: 1170px;
+  background-color: #c7c1c1;
+}
+.navbar {
+    background-color: #ffffff;
+    overflow: hidden;
 }
 
-h1 {
-  margin: 0;
+.navbar-inner {
+    padding: 10px;
 }
 
-.wrapper {
-  max-width: 800px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.navbar-inner .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
-nav {
-  display: flex;
+.navbar-inner ul.nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-nav a {
-  color: white;
-  text-decoration: none;
-  padding: 5px 10px;
+.navbar-inner ul.nav li {
+    display: inline;
+    margin-right: 10px;
 }
 
-nav a:hover {
-  background-color: #555;
+.navbar-inner ul.nav li:last-child {
+    margin-right: 0;
 }
 
-nav a.active {
-  background-color: #555;
+.navbar-inner ul.nav li router-link {
+    color: #fff;
+    text-decoration: none;
 }
 
-.RouterView {
-  margin-top: 20px;
+.navbar-inner ul.nav li router-link:hover {
+    color: #ccc;
 }
-*/
+
 footer {
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 10px;
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-} 
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+		height: 40px;
+		line-height: 40px;
+		text-align: center;
+		margin: 0;
+		/* margin-top: 100px; */
+		background: #f5f5f5;
+		
+}
 </style>

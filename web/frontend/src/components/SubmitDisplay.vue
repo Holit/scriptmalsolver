@@ -1,5 +1,3 @@
-<!-- frontend/src/components/FileUploader.vue -->
-
 <template>
   <div>
     <div class="file-upload-container">
@@ -21,6 +19,7 @@
 import axios from 'axios';
 
 export default {
+  name: 'SubmitDisplay',
   data() {
     return {
       fileProperties: []
