@@ -42,8 +42,16 @@ core
 scanner/examples/rootfs/
 *.dll
 
+#virtual env
+venv
+
 #node_modules
 *node_modules
 web/backend/node_modules
 web/frontend/node_modules
+
+#logs
 web/backend/log_qiling.log
+
+#backend media
+web/backend/media

@@ -89,6 +89,7 @@ def login(request):
     username = request.POST.get('user')
     password = request.POST.get('password')
 
+    #从数据库中读取
     #Insecure login verfication
     # will be done.
     if(username == "root" and password == "toor"):
@@ -96,6 +97,7 @@ def login(request):
     return render(request, "login.html", {"error_msg" : "Incorrect username or password"})
 
 def index(request):
+    #写入数据库
     submit=[
         {'time' : '2024-3-3 17:33:45.3333',
          'filename' : 'rock_you!.zip',
@@ -141,6 +143,7 @@ def submit(request):
                     for chunk in file.chunks():
                         sha256.update(chunk)
                     file_hash = sha256.hexdigest()
+                    #做SHA256查重
                     original_file_name, file_extension = file.name.split('.')[-2], file.name.split('.')[-1] 
 
                     timestamp = str(int(time.time()))
@@ -148,13 +151,16 @@ def submit(request):
                     new_file_name = re.sub(r'[^a-zA-Z0-9]', '_', file_hash) + '_' + original_file_name + '_' + timestamp + '.'+ file_extension
                     fs = FileSystemStorage()
                     fs.save(new_file_name, file)
+                    
+                    #写入数据库
+
                 else:
                     msg['msg'].append('文件 ' + file.name + ' 大小超过限制')
                     #return render(request, 'index.html')
             msg['succeed'] = True
             #如果未报错
             if(len(msg['msg']) == 0):
-                msg['msg'] = '文件成功上传'
+                msg['msg'] = ['文件成功上传']
 
             return render(request, 'index.html', {'msg': msg})
     
