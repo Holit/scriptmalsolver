@@ -14,16 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from .views import upload_file
-from .views import type_scan
-from .views import analyze_file
-from .views import hello_world
-from .views import test_qiling
+from backend import views
 
 urlpatterns = [
-    path('',hello_world, name='hello_world'),
-    path('api/upload/', upload_file, name='upload_file'),
-    path('api/type_scan/',type_scan,name ='type_scan'),
-    path('api/analyze/',analyze_file,name = 'analyze_file'),
-    path('test', test_qiling , name='test_qiling')
+    #path('',views.hello_world, name='hello_world'),
+    #path('api/upload/', views.upload_file, name='upload_file'),
+    #path('api/type_scan/',views.type_scan,name ='type_scan'),
+    #path('api/analyze/',views.analyze_file,name = 'analyze_file'),
+    #path('test', views.test_qiling , name='test_qiling'),
+    path('',views.home,name='home'),
+    path('login/',views.login,name='login'),
+    path('index/',views.index,name='index'),
+    path('submit/',views.submit,name='submit')
 ]

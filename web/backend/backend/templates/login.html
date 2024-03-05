@@ -1,0 +1,105 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <title>登录 - 虚拟执行威胁判别器</title>
+    <link
+      rel="stylesheet"
+      href="{%static 'plugins/bootstrap-5.3.3-dist/css/bootstrap.css'%}"
+    />
+
+    <style>
+      @import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,500,700);
+      body,
+      table,
+      th,
+      tr,
+      td,
+      p {
+        font-family: "Source Sans Pro", sans-serif;
+        color: #666;
+      }
+      body a {
+        color: #666;
+      }
+      body a:hover {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <script src="{%static 'plugins/bootstrap-5.3.3-dist/js/bootstrap.js'%}"></script>
+    <script src="{%static 'js/jquery-3.7.1.min.js'%}"></script>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <form method="post" action="/login/" class="custom-form">
+            <h1>登录</h1>
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="username">用户名</label>
+              <input
+                type="text"
+                class="form-control"
+                id="username"
+                placeholder="Username"
+                name="user"
+              />
+            </div>
+            <div class="form-group">
+              <label for="password">密码</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                placeholder="Password"
+                name="password"
+              />
+            </div>
+            <hr />
+            <div class="text-right" style="display: flex; justify-content: space-between;">
+                <span style="color: red; flex-basis: 70%;">{{error_msg}}</span>
+                <div style="display: flex; flex-basis: 30%;">
+                  <a href="/register" class="btn btn-link" style="flex-grow: 1;">注册</a>
+                  <button type="submit" class="btn btn-primary" style="flex-grow: 1;">登录</button>
+                </div>
+              </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <style>
+      body {
+        background-image: url("{{ request.session.url_photo }}");
+        background-size: cover; /* 确保背景图片覆盖整个页面 */
+      }
+
+      .custom-form {
+        backdrop-filter: blur(10px); /* 背景虚化效果 */
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.5
+        ); /* 背景颜色和透明度，使得背景虚化后更明显 */
+        width: auto;
+        height: auto;
+        border: 1px solid #ccc;
+        padding: 20px;
+        margin-top: 50px; /* 垂直居中 */
+      }
+
+      .container {
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </body>
+</html>
