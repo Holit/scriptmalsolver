@@ -87,6 +87,8 @@ def ql_get_module_function(module_name: str, member_name: str):
 
 
 def __emu_env_from_pathname(path: str) -> Tuple[Optional[QL_ARCH], Optional[QL_OS], Optional[QL_ENDIAN]]:
+
+    #Macos External Kernal
     if os.path.isdir(path) and path.endswith('.kext'):
         return QL_ARCH.X8664, QL_OS.MACOS, QL_ENDIAN.EL
 

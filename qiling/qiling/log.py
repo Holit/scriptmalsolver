@@ -193,7 +193,7 @@ def setup_logger(ql: Qiling, log_file: Optional[str], console: bool, log_overrid
 
         # Do we have to write log to a file?
         if log_file is not None:
-            handler = FileHandler(log_file)
+            handler = FileHandler(log_file,encoding='utf-8')
             formatter = QlBaseFormatter(ql, FMT_STR)
             handler.setFormatter(formatter)
             log.addHandler(handler)
