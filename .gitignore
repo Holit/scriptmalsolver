@@ -39,7 +39,7 @@ core
 *.perf
 
 #rootfs
-scanner/examples/rootfs/
+rootfs/
 *.dll
 
 #virtual env
