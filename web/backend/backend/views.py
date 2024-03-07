@@ -60,7 +60,7 @@ def upload_file(request):
                 'time' : datetime.now(),
                 'content_type' : file.content_type,
                 'hash' : hashlib.sha256(file.read()).hexdigest(),
-                'report' : report_file(file)
+                #'report' : report_file(file)
             }
             fileProperties.append(info)
         return JsonResponse({'fileProperties': fileProperties})

@@ -55,3 +55,6 @@ web/backend/log_qiling.log
 
 #backend media
 web/backend/media
+
+#all logs
+*.log
