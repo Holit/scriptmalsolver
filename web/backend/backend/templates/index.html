@@ -45,10 +45,10 @@
                 </tr>
                 {% for item in submit_list %}
                 <tr>
-                    <td>{{item.time}}</th>
-                    <td>{{item.filename}}</th>
-                    <td>{{item.size}}</th>
-                    <td><a>{{item.sha256}}</a></th>
+                    <td><div class="scrollable-content" style="max-width: 234px">{{item.time}}</div></td>
+                    <td><div class="scrollable-content" style="max-width: 351px">{{item.filename}}</div></td>
+                    <td><div class="scrollable-content" style="max-width: 117px">{{item.size}}</div></td>
+                    <td><div class="scrollable-content" style="max-width: 700px"><a href="../report?hash={{item.sha256}}">{{item.sha256}}</a></div></td>
                 </tr>
                 {% endfor %}
             </table>
@@ -68,6 +68,10 @@
             max-width: 1170px; /* 内容固定为 1170px */
             width: 90%;
             
+        }
+        .scrollable-content {
+            overflow-x: auto; /* 启用水平滚动 */
+            white-space: nowrap; /* 防止内容换行 */
         }
     </style>
 </html>
