@@ -74,41 +74,7 @@
         </a>
       </header>
 
-      <div class="p-5 mb-4 bg-light rounded-3">
-        <div class="container-fluid py-5">
-          <h1 class="display-5 fw-bold">基于Qiling的轻量化恶意代码沙盒</h1>
-          <p class="col-md-11 fs-4">
-            Qiling虚拟执行框架是一个功能强大的工具，用于模拟不同架构的系统环境。其优势在于提供了快速、可扩展的分析恶意代码的能力，无需实际运行恶意样本，同时支持多种操作系统和硬件平台，有助于深入研究恶意软件的行为和特征。
-          </p>
 
-          <div class="card" style="width: 50rem;">
-            <div class="card-header">
-              快速提交
-            </div>
-            <div class="card-body">
-              <form method="post" enctype="multipart/form-data" action="/submit/">
-                {% csrf_token %}
-                <div class="mb-3">
-                  <label class="form-label" for="customFile">提供单个文件供沙盒执行分析，文件大小不超过10MB</label>
-                  <input type="file" class="form-control" id="file" name="file">
-                </div>
-                {% for message in msg.msg %}
-                {% if msg.succeed == True %}
-                <span style="color: green">
-                  {% else %}
-                  <span style="color: red">
-                    {% endif %}
-                    {{message}}</span>
-                  {% endfor %}
-                  <button type="submit" class="btn btn-primary">提交</button>
-
-              </form>
-
-
-            </div>
-          </div>
-        </div>
-      </div>
       <footer class="pt-3 mt-4 text-muted border-top">
         &copy; 2024 安天|HEU
       </footer>

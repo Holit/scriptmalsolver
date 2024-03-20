@@ -1,0 +1,108 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>虚拟执行威胁判别器</title>
+    <link rel="stylesheet" href="{%static 'plugins/bootstrap-5.3.3-dist/css/bootstrap.css'%}">
+</head>
+
+<body>
+    <header class="main-app__header">
+        <h1 style="text-align: center;">虚拟执行威胁判别器</h1>
+    </header>
+    <main class="main-app__view">
+        <div class="container">
+            <div class="content">
+                <hr>
+                <h2>手动提交</h2>
+                <form method="post" enctype="multipart/form-data" action="/submit/">
+                    {% csrf_token %}
+                    <label for="file">选取文件（文件大小不能大于10MB）</label>
+                    <input type="file" id="file" name="file" multiple />
+                    <input type="submit" value="上传">
+    
+                    {% for message in msg.msg %}
+                    {% if msg.succeed == True %}
+                    <span style="color: green">
+                        {% else %}
+                        <span style="color: red">
+                            {% endif %}
+                            {{message}}</span>
+                        {% endfor %}
+                </form>
+                <details>
+                    <summary>分析参数设置</summary>
+                    Something small enough to escape casual notice.
+                </details>
+                <hr>
+                <h2>提交历史</h2>
+                <table>
+                    <tr>
+                        <th>提交时间</th>
+                        <th>文件名</th>
+                        <th>大小</th>
+                        <th>SHA256</th>
+                    </tr>
+                    {% for item in submit_list %}
+                    <tr>
+                        <td>
+                            <div class="scrollable-content">{{item.time}}</div>
+                        </td>
+                        <td>
+                            <div class="scrollable-content">{{item.filename}}</div>
+                        </td>
+                        <td>
+                            <div class="scrollable-content">{{item.size}}</div>
+                        </td>
+                        <td>
+                            <div class="scrollable-content"><a href="../report?hash={{item.sha256}}">{{item.sha256}}</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+          <span class="text-muted">Place sticky footer content here.</span>
+        </div>
+      </footer>         
+
+</body>
+<style>
+    .container {
+        display: flex;
+        justify-content: center;
+        border: 1px solid #ccc;
+        /* 边界线 */
+        border-radius: 5px;
+
+    }
+
+    .content {
+        max-width: 1170px;
+        /* 内容固定为 1170px */
+        width: 90%;
+        font-family: "Times New Roman", "Times", "仿宋", "FangSong", Consolas, monospace;
+
+    }
+
+    .main-app__footer {
+        text-align: center;
+        height: 40px; /*设定footer高度*/
+        position: absolute; /*设定footer绝对位置在底部*/
+        bottom: 0;
+        width: 100%; /*展开footer宽度*/
+        line-height: 40px;
+    }
+</style>
+
+</html>

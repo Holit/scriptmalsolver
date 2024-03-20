@@ -23,3 +23,23 @@ class bingWallpaperHelper(object):
         #将图片的残缺url组合成一个完整的url
         url_photo=r'http://cn.bing.com'+url_photo
         return url_photo
+
+def compute_crc32(file_path):
+    '''
+    计算文件的crc32值
+    '''
+    import zlib
+    with open(file_path, 'rb') as file:
+        data = file.read()
+        crc = zlib.crc32(data)
+        return hex(crc & 0xFFFFFFFF)[2:].upper()
+
+def get_runtime_folder():
+    '''
+    获取运行时文件夹
+    '''
+    import os
+    dir = os.path.split(__file__)[0]
+    basedir = os.path.split(dir)[0]
+    return basedir
+

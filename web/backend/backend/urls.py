@@ -22,9 +22,10 @@ urlpatterns = [
     #path('api/type_scan/',views.type_scan,name ='type_scan'),
     #path('api/analyze/',views.analyze_file,name = 'analyze_file'),
     #path('test', views.test_qiling , name='test_qiling'),
-    path('',views.home,name='home'),
-    path('login/',views.login,name='login'),
+    path('',views.index),
     path('index/',views.index,name='index'),
+    path('login/',views.login,name='login'),
     path('submit/',views.submit,name='submit'),
-    path('report/',views.report,name='report')
+    path('report/',views.report,name='report'),
+    path('analyze/',views.analyze,name='analyze'),
 ]

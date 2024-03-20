@@ -14,16 +14,17 @@ from django.shortcuts import redirect
 from django.core.files.storage import FileSystemStorage
 import django
 
-#Dynamic load dev version of qiling
+
+#动态加载qiling
 import sys
 from importlib import util
 from os.path import basename
 from os.path import exists
 from types import ModuleType
 
-
 def load_package_from_path(pkg_path: str) -> ModuleType:
     """
+    从指定路径加载包
     ref: https://stackoverflow.com/a/50395128
     """
     try:
@@ -39,17 +40,58 @@ def load_package_from_path(pkg_path: str) -> ModuleType:
         return None
     return module
 
-load = load_package_from_path  # short alias
-qiling = load(r'E:\Projects\scriptmalsolver\src\qiling\qiling')
+#指定qiling作为全局包
+global qiling 
+qiling = load_package_from_path(r'E:\Projects\scriptmalsolver\src\qiling\qiling')
 
+#指定是否使用公共代码
 using_public_code = False
 if(qiling == None):
     using_public_code = True
     from qiling import *
-#########################################33
+#########################################
+    
 import os
 
 from backend import utils
+from .utils import *
+
+def test_qiling(request):
+    '''
+    测试qiling组件可用性
+    '''
+    argv = [r'E:\Projects\scriptmalsolver\rootfs\x8664_windows\bin\hello.exe']
+    rootfs = r'E:\Projects\scriptmalsolver\rootfs\x8664_windows'
+    #verbose = qiling.QL_VERBOSE.DEBUG
+    ql = qiling.Qiling(argv=argv, rootfs=rootfs, log_file = "log_qiling.log", verbose = 4)
+    #ql = qiling.Qiling(argv=argv, rootfs=rootfs)
+    ql.run()
+    return JsonResponse({'result' : 'OK'})
+
+def login(request):
+    '''
+    登录页面
+    '''
+    LoadWallpaper = False
+    if(request.method == "GET"):
+        #获取是否加载壁纸
+        if(LoadWallpaper):
+            wallpaperHelper = utils.bingWallpaperHelper()
+            url_photo=wallpaperHelper.GetWallpaper()
+            request.session['url_photo']=url_photo
+        return render(request,"login.html")
+    elif(request.method == "POST"):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        print(f'username = {username}, password = {password}')
+        #如果用户名和密码正确
+        if(username == "root" and password == "toor"):
+            return redirect('/submit')
+        return render(request, "login.html", {"error_msg" : "用户名或密码错误"})
+    
+def index(request):
+    return render(request, "index.html")
+
 
 def upload_file(request):
     if request.method == 'POST' and request.FILES:
@@ -69,44 +111,43 @@ def upload_file(request):
         return JsonResponse({'fileProperties': fileProperties})
     else:
         return JsonResponse({'error': '请上传文件'}, status=400)
-
-def test_qiling(request):
-    argv = [r'E:\Projects\scriptmalsolver\rootfs\x8664_windows\bin\hello.exe']
-    rootfs = r'E:\Projects\scriptmalsolver\rootfs\x8664_windows'
-    #verbose = qiling.QL_VERBOSE.DEBUG
-    ql = qiling.Qiling(argv=argv, rootfs=rootfs, log_file = "log_qiling.log", verbose = 4)
-    #ql = qiling.Qiling(argv=argv, rootfs=rootfs)
-    ql.run()
-    return JsonResponse({'result' : 'OK'})
-
-def home(request):
-    return redirect('login')
-
-def login(request):
-    LoadWallpaper = False
-    if(request.method == "GET"):
-        if(LoadWallpaper):
-            wallpaperHelper = utils.bingWallpaperHelper()
-            url_photo=wallpaperHelper.GetWallpaper()
-            request.session['url_photo']=url_photo
-        return render(request,"login.html")
     
-    username = request.POST.get('user')
-    password = request.POST.get('password')
+def upload(request):
+    upload_message = {
+        'msg' : '上传参数错误',
+        'succeed' : False
+    }
+    if(request.method == 'POST'):
+        if(request.FILES):
+            uploaded_file = request.FILES['file']
+            if(uploaded_file.size > 10 * 1024 * 1024):
+                upload_message['msg'] = '文件大小超过限制'
+                return render(request, "index.html", {'upload_message' : upload_message})
+            else:
+                fs = FileSystemStorage()
+                fs.save(uploaded_file.name, uploaded_file)
+                upload_message['msg'] = '文件上传成功'
+                upload_message['succeed'] = True
+                return render(request, "analyze.html", {'upload_message' : upload_message})
+    return
 
-    #从数据库中读取
-    #Insecure login verfication
-    # will be done.
-    if(username == "root" and password == "toor"):
-        return redirect('/index')
-    return render(request, "login.html", {"error_msg" : "Incorrect username or password"})
-
+def analyze(request):
+    if request.method=='GET':
+        return render(request, "analyze.html")
+        return HttpResponse('未选择文件或者获取文件失败',status=400)
+    elif request.method=='POST':
+        file = request.FILES['file']
+        if file.size > 10 * 1024 * 1024:
+            return HttpResponse('文件大小超过限制',status=400)
+        file_path = f'media/{file.name}'
+        fs = FileSystemStorage()
+        fs.save(file_path, file)
+        return HttpResponse('文件上传成功')
+    
+    return render(request, "analyze.html")
+# 需要重新设计submitted_files的结构。
+# 考虑将其写入文件或者数据库。
 submitted_files = []
-def index(request):
-    submitted_files = scan_media_folder()
-    print(submitted_files)
-    return render(request, "index.html",{'submit_list' : submitted_files})
-
 def submit(request):
     msg = {
         'msg' : ['上传参数错误'],
@@ -138,6 +179,8 @@ def submit(request):
                     except ValueError as e:
                         msg['msg'].append(str(e))
                         continue
+                    except Exception as e:
+                        raise e
                     fs = FileSystemStorage()
                     fs.save(new_file_name, file)
                     
@@ -147,14 +190,19 @@ def submit(request):
                     )
                 else:
                     msg['msg'].append('文件 ' + file.name + ' 大小超过限制')
-                    #return render(request, 'index.html')
             msg['succeed'] = True
             #如果未报错
             if(len(msg['msg']) == 0):
                 msg['msg'] = ['文件成功上传']
-            return render(request, 'index.html', {'msg': msg,'submit_list' : submitted_files})
-    
-    return render(request, 'index.html')
+            return render(request, 'submit.html', {
+                'msg': msg,
+                'submit_list' : submitted_files})
+    elif request.method == 'GET':
+        submitted_files = scan_media_folder()
+        return render(request, "submit.html",{
+            'msg' : '',
+            'submit_list' : submitted_files})
+    return render(request, 'submit.html')
 
 def report(request):
     # 获取问号传递的参数
@@ -164,9 +212,9 @@ def report(request):
         return render(request, 'report.html', {'info' : return_example_report_info(),
                                                'hash' : hash,
                                                'real_file_name' : 'example.exe'})
-
+    global submitted_files
     submitted_files = scan_media_folder()
-    print(submitted_files)
+    
     file_info = next((info for info in submitted_files if info['sha256'] == hash), None)
     if(file_info == None):
         return HttpResponse('获取报告时发生错误:文件不存在')
@@ -489,26 +537,30 @@ def scan_media_folder():
     扫描media文件夹，并且对文件夹下所有文件都执行get_file_info操作，写入submitted_files
     '''
     import os
-    media_folder = 'media'
+    runtime_folder = get_runtime_folder()
+    media_folder = runtime_folder + '\\media'
+    
+    global submitted_files
     submitted_files = []
 
     for root, dirs, files in os.walk(media_folder):
+        if(len(files) == 0):
+            raise FileNotFoundError('media文件夹为空')
         for file in files:
             file_path = os.path.join(root, file)
-            try:
-                new_file_name, file_info = get_file_info(file_path)
-                submitted_files.append(file_info)
-            except ValueError as e:
-                #忽略重复文件
-                continue
+            
+            file_info = get_file_info(file_path ,rename_needed=False)
+            submitted_files.append(file_info)
+
     return submitted_files
 
-def get_file_info(file):
+def get_file_info(file, rename_needed=True):
     '''
     获取文件信息
     file : str : 文件路径
-    file : django.core.files.uploadedfile.InMemoryUploadedFile : 文件对象
+    file : 文件对象（请执行错误处理）
     '''
+    
     if(type(file) == str):
 
         import os
@@ -525,14 +577,7 @@ def get_file_info(file):
             raise ValueError('存在相同哈希值的文件')
         
         _, filename = os.path.splitext(file)
-        original_file_name, file_extension = filename.split('.')[-2], filename.split('.')[-1]
-
-        # 获取当前时间戳
-        timestamp = str(int(time.time()))
-
-        # 替换非a-zA-Z0-9字符为下划线，构建新文件名
-        new_file_name = re.sub(r'[^a-zA-Z0-9]', '_', file_hash) + '_' + original_file_name + '_' + timestamp + '_'+ file_extension
-
+        
         file_info = {
             'time' : datetime.now(),
             'filename' : os.path.basename(file),
@@ -540,35 +585,55 @@ def get_file_info(file):
             'sha256' : file_hash,
             'path' : file
         }
-        return new_file_name,file_info
-    
-    elif(type(file) == django.core.files.uploadedfile.InMemoryUploadedFile):
-        sha256 = hashlib.sha256()
-        for chunk in file.chunks():
-            sha256.update(chunk)
-        file_hash = sha256.hexdigest()
-        if file_hash in [info['sha256'] for info in submitted_files]:
-            raise ValueError('存在相同哈希值的文件')
-        original_file_name, file_extension = file.name.split('.')[-2], file.name.split('.')[-1] 
+        if(rename_needed == False):
+            return file_info
+        
+        # 获取文件名和扩展名
+        filename_structure = filename.split('.')
+        original_file_name, file_extension = '',''
+        if(len(filename_structure) >= 2):
+            original_file_name, file_extension = filename.split('.')[-2], filename.split('.')[-1]
 
+        # 获取当前时间戳
         timestamp = str(int(time.time()))
-        # 替换非a-zA-Z0-9字符为下划线
-        new_file_name = re.sub(r'[^a-zA-Z0-9]', '_', file_hash) + '_' + original_file_name + '_' + timestamp + '_'+ file_extension
 
-        file_info = {
-            'time' : datetime.now(),
-            'filename' : file.name,
-            'size' : file.size,
-            'sha256' : file_hash,
-            'path' : f'media\\{new_file_name}'
-        }
+        # 替换非a-zA-Z0-9字符为下划线，构建新文件名
+        new_file_name =  file_hash[8:32+8] + '_' + re.sub(r'[^a-zA-Z0-9]', '_', original_file_name) + '_' + timestamp + '_'+ file_extension
+
         return new_file_name,file_info
     else:
-        raise AssertionError('未知的参数表类型')
+        try:
+            sha256 = hashlib.sha256()
+            for chunk in file.chunks():
+                sha256.update(chunk)
+            file_hash = sha256.hexdigest()
+            if file_hash in [info['sha256'] for info in submitted_files]:
+                raise ValueError(f'存在相同哈希值的文件\n{file.name}\n{file_hash}')
+            
+            if(rename_needed == False):
+                return file_info
+            
+            # 获取文件名和扩展名
+            filename_structure = filename.split('.')
+            original_file_name, file_extension = '',''
+            if(len(filename_structure) >= 2):
+                original_file_name, file_extension = filename.split('.')[-2], filename.split('.')[-1]
 
-def compute_crc32(file_path):
-    import zlib
-    with open(file_path, 'rb') as file:
-        data = file.read()
-        crc = zlib.crc32(data)
-        return hex(crc & 0xFFFFFFFF)[2:].upper()
+            # 获取当前时间戳
+            timestamp = str(int(time.time()))
+
+            # 替换非a-zA-Z0-9字符为下划线，构建新文件名
+            new_file_name =  file_hash[8:32+8] + '_' + re.sub(r'[^a-zA-Z0-9]', '_', original_file_name) + '_' + timestamp + '_'+ file_extension
+
+            file_info = {
+                'time' : datetime.now(),
+                'filename' : file.name,
+                'size' : file.size,
+                'sha256' : file_hash,
+                'path' : f'media\\{new_file_name}'
+            }
+            
+            return new_file_name,file_info
+        except Exception as e:
+            raise ValueError('获取文件信息发生错误：' + str(e))
+        
