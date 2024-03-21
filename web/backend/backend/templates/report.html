@@ -1,273 +1,394 @@
-{% load static %}
+{%load static%}
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
+    <meta name="description" content>
     <title>{{hash}} 的分析报告</title>
-    
-    <link rel="stylesheet" href="{%static 'plugins/bootstrap-5.3.3-dist/css/bootstrap.css'%}">
-    
-</head>
 
-<body>
+    <link rel="stylesheet"
+      href="{%static 'plugins/bootstrap-5.3.3-dist/css/bootstrap.min.css'%}">
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
 
-    <div class="container">
-        <div class="content">
-            <h1 style="text-align: center;">{{real_file_name}} 的分析报告</h1>
-            <h2>基本信息</h2>
-            <hr>
-            <table style="text-align: left;">
-                <tbody>
-                    <tr>
-                        <th>文件名</td>
-                        <td>{{ info.general_info.filename }}</td>
-                    </tr>
-                    <tr>
-                        <th>判定结果:</th>
-                        <td>{{ info.general_info.verdict }}</td>
-                    </tr>
-                    <tr>
-                        <th>威胁情况:</th>
-                        <td>{{ info.general_info.threats }}</td>
-                    </tr>
-                    <tr>
-                        <th>分析时间:</th>
-                        <td>{{ info.general_info.analysis_Time }}</td>
-                    </tr>
-                    <tr>
-                        <th>目标操作系统:</th>
-                        <td>{{ info.general_info.tagret_os }}</td>
-                    </tr>
-                    <tr>
-                        <th>标签:</th>
-                        <td>
-                            <ul>
-                                {%for tag in info.general_info.tags%}
-                                    <li>{{ tag }}</li>
-                                {%endfor%}
-                            </ul>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>MIME类型:</th>
-                        <td>{{ info.general_info.MIME }}</td>
-                    </tr>
-                    <tr>
-                        <th>大小:</th>
-                        <td>{{ info.general_info.size }}</td>
-                    </tr>
-                    <tr>
-                        <th>上传时间:</th>
-                        <td>{{ info.general_info.time }}</td>
-                    </tr>
-                     <tr>
-                        <th>哈希值:</th>
-                        <td>
-                            <ul>
-                                <table>
-                                    <tr>
-                                        <th>CRC32:</th>
-                                        <td>{{ info.general_info.hash.CRC32 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>CRC64:</th>
-                                        <td>{{ info.general_info.hash.CRC64 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>SHA256:</th>
-                                        <td>{{ info.general_info.hash.SHA256 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>SHA1:</th>
-                                        <td>{{ info.general_info.hash.SHA1 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>BLAKE2sp:</th>
-                                        <td>{{ info.general_info.hash.BLAKE2sp }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>XXH64:</th>
-                                        <td>{{ info.general_info.hash.XXH64 }}</td>
-                                    </tr>
-                                </table>
-                            </ul>
-                        </td>
-                     </tr>
-                </tbody>
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+
+      .b-example-divider {
+        height: 3rem;
+        background-color: rgba(0, 0, 0, .1);
+        border: solid rgba(0, 0, 0, .15);
+        border-width: 1px 0;
+        box-shadow: inset 0 .5em 1.5em rgba(0, 0, 0, .1), inset 0 .125em .5em rgba(0, 0, 0, .15);
+      }
+
+      .b-example-vr {
+        flex-shrink: 0;
+        width: 1.5rem;
+        height: 100vh;
+      }
+
+      .bi {
+        vertical-align: -.125em;
+        fill: currentColor;
+      }
+
+      .nav-scroller {
+        position: relative;
+        z-index: 2;
+        height: 2.75rem;
+        overflow-y: hidden;
+      }
+
+      .nav-scroller .nav {
+        display: flex;
+        flex-wrap: nowrap;
+        padding-bottom: 1rem;
+        margin-top: -1px;
+        overflow-x: auto;
+        text-align: center;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+      }
+    </style>
+
+    <!-- Custom styles for this template -->
+    <link href="{%static 'css/report.css'%}" rel="stylesheet">
+  </head>
+  <body class="bg-light">
+
+    <!-- <header class="bd-header py-3 d-flex flex-md-nowrap align-items-stretch border-bottom border-light shadow "> -->
+    <header class="bd-header py-3 d-flex sticky-top bg-light flex-md-nowrap p-0 shadow">
+      <div class="container-fluid d-flex align-items-center">
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">虚拟执行威胁判别器</a>
+        
+      </div>
+    </header>
+    <aside
+      class="bd-aside sticky-xl-top text-muted align-self-start mb-3 mb-xl-5 px-2">
+      <nav class="small" id="toc">
+        <ul class="list-unstyled">
+          <li class="my-2">
+            <button
+              class="btn d-inline-flex align-items-center collapsed border-0"
+              data-bs-toggle="collapse" aria-expanded="true"
+              data-bs-target="#contents-collapse"
+              aria-controls="contents-collapse">{{hash}} 的分析报告</button>
+            <ul class="list-unstyled ps-3 collapse" id="contents-collapse">
+              <li><a
+                  class="d-inline-flex align-items-center rounded text-decoration-none"
+                  href="#general_info">基本信息</a></li>
+                  {%if info.qiling_info != None%}
+              <li><a
+                  class="d-inline-flex align-items-center rounded text-decoration-none"
+                  href="#qiling_info">麒麟虚拟执行模块信息</a></li>
+                  {%endif%}
+                  {%if info.behavor_activities != None%}
+              <li><a
+                  class="d-inline-flex align-items-center rounded text-decoration-none"
+                  href="#behavor_activities">行为跟踪</a></li>
+                  {%endif%}
+                  {%if info.malware_configuration != None%}
+              <li><a
+                  class="d-inline-flex align-items-center rounded text-decoration-none"
+                  href="#malware_configuration">恶意代码配置信息</a></li>
+                  {%endif%}
+                  {%if info.static_info != None%}
+              <li><a
+                  class="d-inline-flex align-items-center rounded text-decoration-none"
+                  href="#static_info">静态信息</a></li>
+                  {%endif%}
+                  {%if info.report != None%}
+              <li><a
+                  class="d-inline-flex align-items-center rounded text-decoration-none"
+                  href="#report">详细报告</a></li>
+                  {%endif%}
+            </ul>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+    <div class="bd-cheatsheet container-fluid bg-body">
+      <section id="content">
+        <h2
+          class="sticky-xl-top fw-bold pt-3 pt-xl-5 pb-2 pb-xl-3">{{hash}}
+          的分析报告</h2>
+
+        <article class="my-3" id="general_info">
+          <div
+            class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+            <h3>基本信息</h3>
+          </div>
+
+          <table style="text-align: left;">
+            <tbody>
+              <tr>
+                <th>文件名</td>
+                <td>{{ info.general_info.filename }}</td>
+              </tr>
+              <tr>
+                <th>判定结果:</th>
+                <td>{{ info.general_info.verdict }}</td>
+              </tr>
+              <tr>
+                <th>威胁情况:</th>
+                <td>{{ info.general_info.threats }}</td>
+              </tr>
+              <tr>
+                <th>分析时间:</th>
+                <td>{{ info.general_info.analysis_Time }}</td>
+              </tr>
+              <tr>
+                <th>目标操作系统:</th>
+                <td>{{ info.general_info.tagret_os }}</td>
+              </tr>
+              <tr>
+                <th>标签:</th>
+                <td>
+                  <ul>
+                    {%for tag in info.general_info.tags%}
+                    <li>{{ tag }}</li>
+                    {%endfor%}
+                  </ul>
+                </td>
+              </tr>
+              <tr>
+                <th>MIME类型:</th>
+                <td>{{ info.general_info.MIME }}</td>
+              </tr>
+              <tr>
+                <th>大小:</th>
+                <td>{{ info.general_info.size }}</td>
+              </tr>
+              <tr>
+                <th>上传时间:</th>
+                <td>{{ info.general_info.time }}</td>
+              </tr>
+              <tr>
+                <th>哈希值:</th>
+                <td>
+                  <ul>
+                    <table>
+                      <tr>
+                        <th>CRC32:</th>
+                        <td>{{ info.general_info.hash.CRC32 }}</td>
+                      </tr>
+                      <tr>
+                        <th>CRC64:</th>
+                        <td>{{ info.general_info.hash.CRC64 }}</td>
+                      </tr>
+                      <tr>
+                        <th>SHA256:</th>
+                        <td>{{ info.general_info.hash.SHA256 }}</td>
+                      </tr>
+                      <tr>
+                        <th>SHA1:</th>
+                        <td>{{ info.general_info.hash.SHA1 }}</td>
+                      </tr>
+                      <tr>
+                        <th>BLAKE2sp:</th>
+                        <td>{{ info.general_info.hash.BLAKE2sp }}</td>
+                      </tr>
+                      <tr>
+                        <th>XXH64:</th>
+                        <td>{{ info.general_info.hash.XXH64 }}</td>
+                      </tr>
+                    </table>
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </article>
+        {%if info.qiling_info != None%}
+        <article class="my-3" id="qiling_info">
+          <div
+            class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+            <h3>麒麟虚拟执行模块信息</h3>
+          </div>
+
+          <table style="text-align: left;">
+            <tbody>
+              <tr>
+                <th>架构</td>
+                <td>{{ info.qiling_info.rootfs }}</td>
+              </tr>
+              <tr>
+                <th>执行参数:</th>
+                <td>{{ info.general_info.verdict }}</td>
+              </tr>
+              <tr>
+                <th>日志:</th>
+                <td>{{ info.qiling_info.log_file }}</td>
+              </tr>
+              <tr>
+                <th>日志报告详细程度:</th>
+                <td>{{ info.qiling_info.verbose }}</td>
+              </tr>
+              <tr>
+                <th>运行总耗时:</th>
+                <td>{{ info.qiling_info.runtime }}s</td>
+              </tr>
+              <tr>
+                <th>结果:</th>
+                <td>{{ info.qiling_info.result }}</td>
+              </tr>
+              <tr>
+                <th>错误:</th>
+                <td>
+
+                  <ul>
+                    {% for error in info.qiling_info.qiling_errors %}
+                    <li>{{ error.error_type }}</li>
+                    <pre>{{ error.error_log }}</pre>
+                    {% endfor %}
+                  </ul>
+                </td>
+              </tbody>
             </table>
-            {%if info.qiling_info != None%}
-            <h2>麒麟虚拟执行模块信息</h2>
-            <hr>
-            <table style="text-align: left;">
-                <tbody>
-                    <tr>
-                        <th>架构</td>
-                        <td>{{ info.qiling_info.rootfs }}</td>
-                    </tr>
-                    <tr>
-                        <th>执行参数:</th>
-                        <td>{{ info.general_info.verdict }}</td>
-                    </tr>
-                    <tr>
-                        <th>日志:</th>
-                        <td>{{ info.qiling_info.log_file }}</td>
-                    </tr>
-                    <tr>
-                        <th>日志报告详细程度:</th>
-                        <td>{{ info.qiling_info.verbose }}</td> 
-                    </tr>
-                    <tr>
-                        <th>运行总耗时:</th>
-                        <td>{{ info.qiling_info.runtime }}s</td> 
-                    </tr>
-                    <tr>
-                        <th>结果:</th>
-                        <td>{{ info.qiling_info.result }}</td>
-                    </tr>
-                    <tr>
-                        <th>错误:</th>
-                        <td>
-                            
-                            <ul>
-                                {% for error in info.qiling_info.qiling_errors %}
-                                <li>{{ error.error_type }}</li>
-                                    <pre >{{ error.error_log }}</pre>
-                                {% endfor %}
-                            </ul>
-                        </td>
-                </tbody>
-            </table>
-            {%endif%}
-            {%if info.behavor_activities != None%}
-            <h2>行为跟踪</h2>
-            <hr>
+          </article>
+          {%endif%}
+
+          {%if info.behavor_activities != None%}
+          <article class="my-3" id="behavor_activities">
+            <div
+              class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+              <h3>行为跟踪</h3>
+            </div>
             <p><strong>恶意行为</strong></p>
             <ul>
-                {% for malicious in info.behavior_activities.malicious %}
-                <li>{{ malicious.description }} ({{ malicious.process_name }} - {{ malicious.process_id }})</li>
-                {% endfor %}
+              {% for malicious in info.behavior_activities.malicious %}
+              <li>{{ malicious.description }} ({{ malicious.process_name }} - {{
+                malicious.process_id }})</li>
+              {% endfor %}
             </ul>
             <p><strong>可疑行为</strong></p>
             <ul>
-                {% for suspicious in info.behavior_activities.suspicous %}
-                <li>{{ suspicious.description }} ({{ suspicious.process_name }} - {{ suspicious.process_id }})</li>
-                {% endfor %}
+              {% for suspicious in info.behavior_activities.suspicous %}
+              <li>{{ suspicious.description }} ({{ suspicious.process_name }} -
+                {{ suspicious.process_id }})</li>
+              {% endfor %}
             </ul>
             <p><strong>正常行为</strong></p>
             <ul>
-                {% for normal in info.behavior_activities.info %}
-                <li>{{ normal.description }} ({{ normal.process_name }} - {{ normal.process_id }})</li>
-                {% endfor %}
+              {% for normal in info.behavior_activities.info %}
+              <li>{{ normal.description }} ({{ normal.process_name }} - {{
+                normal.process_id }})</li>
+              {% endfor %}
             </ul>
-            {%endif%}
 
-            {%if info.malware_configuration != None%}
-            <h2>恶意代码配置信息</h2>
-            <hr>
+          </div>
+        </article>
+        {%endif%}
+
+        {%if info.malware_configuration != None%}
+        <article class="my-3" id="malware_configuration">
+          <div
+            class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+            <h3>恶意代码配置信息</h3>
+          </div>
+          <div>
             <p>{{ info.malware_configuration }}</p>
-            {%endif%}
+          </div>
+        </article>
+        {%endif%}
 
-            {%if info.static_info != None%}
-            <h2>静态信息</h2>
-            <hr>
+        {%if info.static_info != None%}
+        <article class="my-3" id="static_info">
+          <div
+            class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+            <h3>静态信息</h3>
+          </div>
+          <div>
             <p><strong>TRiD:</strong></p>
             <ul>
-                {% for item in info.static_info.TRiD %}
-                <li>{{ item.extension }} - {{ item.description }} ({{ item.possibility }})</li>
-                {% endfor %}
+              {% for item in info.static_info.TRiD %}
+              <li>{{ item.extension }} - {{ item.description }} ({{
+                item.possibility }})</li>
+              {% endfor %}
             </ul>
             <p><strong>EXIF:</strong></p>
             <ul>
-                {% for item in info.static_info.EXIF %}
-                <li>{{ item.main_type }} - {{ item.entry_point }} ({{ item.linker }})</li>
-                {% endfor %}
+              {% for item in info.static_info.EXIF %}
+              <li>{{ item.main_type }} - {{ item.entry_point }} ({{ item.linker
+                }})</li>
+              {% endfor %}
             </ul>
-            {%endif%}
+          </div>
+        </article>
+        {%endif%}
 
-            {%if info.report != None%}
-            <h2>详细报告</h2>
-            <hr>
-            <p><strong>恶意代码</strong> 检出: {{ info.report.malware_detect.detected }}</p>
+        {%if info.report != None%}
+        <article class="my-3" id="report">
+          <div
+            class="bd-heading sticky-xl-top align-self-start mt-5 mb-3 mt-xl-0 mb-xl-2">
+            <h3>详细报告</h3>
+          </div>
+          <div>
+            <p><strong>恶意代码</strong> 检出: {{ info.report.malware_detect.detected
+              }}</p>
             <p><strong>API调用:</strong></p>
             <ul>
-                {% for api in info.report.api_calls %}
-                <li>{{ api }}</li>
-                {% endfor %}
+              {% for api in info.report.api_calls %}
+              <li>{{ api }}</li>
+              {% endfor %}
             </ul>
             <p><strong>关键恶意API调用:</strong></p>
             <ul>
-                {% for api in info.report.key_suspicious_api_called %}
-                <li>{{ api.api }}</li>
-                    <ul>
-                        {% for arg in api.args %}
-                            <li>{{ arg }}</li>
-                        {% endfor %}
-                    </ul>
+              {% for api in info.report.key_suspicious_api_called %}
+              <li>{{ api.api }}</li>
+              <ul>
+                {% for arg in api.args %}
+                <li>{{ arg }}</li>
                 {% endfor %}
+              </ul>
+              {% endfor %}
             </ul>
-            <p><strong>输入输出字符串:</strong> 
-                <ul>
-                    {% for string in info.report.IO_strings %}
-                    <li>
-                        {{ string }}
-                    </li>
-                    {% endfor %}
-                </ul>
+            <p><strong>输入输出字符串:</strong>
+              <ul>
+                {% for string in info.report.IO_strings %}
+                <li>
+                  {{ string }}
+                </li>
+                {% endfor %}
+              </ul>
             </p>
-            <p><strong>文件内含字符串:</strong> 
-                <ul>
-                    {% for string in info.report.strings %}
-                    <li>
-                        {{ string }}
-                    </li>
-                    {% endfor %}
-                </ul>
+            <p><strong>文件内含字符串:</strong>
+              <ul>
+                {% for string in info.report.strings %}
+                <li>
+                  {{ string }}
+                </li>
+                {% endfor %}
+              </ul>
             </p>
             <p><strong>Yara规则:</strong>
-                <ul>
-                    <li>提供商: {{ info.report.yara.provider }}</li>
-                    <li>命中次数: {{ info.report.yara.hits }}</li>
-                    <li>结论: {{ info.report.yara.result }}</li>
-                    <li>错误: {{ info.report.yara.error }}</li>
-                </ul>
+              <ul>
+                <li>提供商: {{ info.report.yara.provider }}</li>
+                <li>命中次数: {{ info.report.yara.hits }}</li>
+                <li>结论: {{ info.report.yara.result }}</li>
+                <li>错误: {{ info.report.yara.error }}</li>
+              </ul>
             </p>
 
             <p><strong>日志:</strong> {{ info.report.logs }}</p>
-            {%endif%}
-        </div>
-    </div>
-    <footer>
-        <script src="{% static 'js/jquery.min.js' %}"></script>
-        <script src="{% static 'js/bootstrap.min.js' %}"></script>
-        <p style="text-align: center;">
-            <a href="www.antiy.cn">安天</a>
-            |
-            <a href="www.hrbeu.edu.cn">HEU</a>
-        </p>
-    </footer>
-</body>
-<style>
-    .container {
-        display: flex;
-        justify-content: center;
-        border: 1px solid #ccc;
-        /* 边界线 */
-        border-radius: 5px;
-    }
-
-    .content {
-        max-width: 1170px;
-        /* 内容固定为 1170px */
-        width: 90%;
-        font-family: "Times New Roman", "Times", "仿宋", "FangSong", Consolas, monospace;
-
-    }
-    
-</style>
-
-</html>
+          </div>
+        </article>
+        {%endif%}
+      </section>
+      <script
+        src="{%static 'plugins/bootstrap-5.3.3-dist/js/bootstrap.bundle.min.js'%}"></script>
+      <script src="{%static 'js/report.js'%}"></script>
+    </body>
+  </html>

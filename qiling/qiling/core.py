@@ -84,6 +84,11 @@ class Qiling(QlCoreHooks, QlCoreStructs):
         self.count = 0
         self._initial_sp = 0
 
+        print("Scriptmalsolver v0.0.1 dev0\n"
+        "Customzied Qiling Framework for Malware Analysis.\n"
+        "This program is under development and should not be used for production.\n"
+        "------------------------------------------------------------------------\n")
+
         """
         Qiling Framework Core Engine
         """
@@ -751,12 +756,10 @@ class Qiling(QlCoreHooks, QlCoreStructs):
             count   : max emulation steps (instructions count); unlimited by default
         """
 
-        # FIXME: we cannot use arch.is_thumb to determine this because unicorn sets the coresponding bit in cpsr
-        # only when pc is set. unicorn sets or clears the thumb mode bit based on pc lsb, ignoring the mode it
-        # was initialized with.
-        #
-        # either unicorn is patched to reflect thumb mode in cpsr upon initialization, or we pursue the same logic
-        # by determining the endianess by address lsb. either way this condition should not be here
+        # FIXME：我们不能使用arch.is_thumb来确定这一点，因为unicorn只在设置pc时设置cpsr中的相应位。
+        # unicorn根据pc的最低有效位来设置或清除.thumb模式位，而忽略了它初始化时的模式。
+        # 要么我们修补unicorn以在初始化时在cpsr中反映.thumb模式，要么我们通过地址的最低有效位来确定字节序。
+        # 无论哪种方式，这个条件都不应该在这里。
         if getattr(self.arch, '_init_thumb', False):
             begin |= 0b1
 
@@ -768,8 +771,9 @@ class Qiling(QlCoreHooks, QlCoreStructs):
         # effectively start the emulation. this returns only after uc.emu_stop is called
         try:
             self.uc.emu_start(begin, end, timeout, count)
-        except Uc.UcError as e:
-            print("Unicorn emulation error:", e)
+            
+        except Exception as e:
+            print("Unexpected exception:", e)
         self._state = QL_STATE.STOPPED
 
         # if an exception was raised during emulation, propagate it up
