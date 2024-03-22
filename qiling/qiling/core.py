@@ -50,7 +50,8 @@ class Qiling(QlCoreHooks, QlCoreStructs):
             *,
             endian: Optional[QL_ENDIAN] = None,
             thumb: bool = False,
-            libcache: bool = False
+            libcache: bool = False,
+            print_copyright: bool = True
     ):
         """ Create a Qiling instance.
 
@@ -83,11 +84,12 @@ class Qiling(QlCoreHooks, QlCoreStructs):
         self.timeout = 0
         self.count = 0
         self._initial_sp = 0
-
-        print("Scriptmalsolver v0.0.1 dev0\n"
-        "Customzied Qiling Framework for Malware Analysis.\n"
-        "This program is under development and should not be used for production.\n"
-        "------------------------------------------------------------------------\n")
+        
+        if(print_copyright):
+            print("Scriptmalsolver v0.0.1 dev0\n"
+            "Customzied Qiling Framework for Malware Analysis.\n"
+            "This program is under development and should not be used for production.\n"
+            "------------------------------------------------------------------------\n")
 
         """
         Qiling Framework Core Engine
@@ -773,7 +775,8 @@ class Qiling(QlCoreHooks, QlCoreStructs):
             self.uc.emu_start(begin, end, timeout, count)
             
         except Exception as e:
-            print("Unexpected exception:", e)
+            self.log.exception(e)
+            #print("Unexpected exception:", e)
         self._state = QL_STATE.STOPPED
 
         # if an exception was raised during emulation, propagate it up

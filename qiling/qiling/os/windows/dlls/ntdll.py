@@ -453,3 +453,16 @@ def hook_wcsstr(ql: Qiling, address: int, params):
 def hook_CsrGetProcessId(ql: Qiling, address: int, params):
     pid = ql.os.profile["PROCESSES"].getint("csrss.exe", fallback=12345)
     return pid
+
+# TODO:
+# 适配如下函数：
+# EventRegister	kernelbase
+# ZwWaitForAlertByThreadId	ntdll
+# ZwQueryKey	ntdll
+# ZwCreateFile	ntdll
+# ZwNotifyChangeKey	ntdll
+# ZwQueryAttributesFile	ntdll
+# RtlReleaseSRWLockExclusive	ntdll
+# RegisterTraceGuidsW	kernelbase
+# EventRegister	kernelbase
+
