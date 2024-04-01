@@ -848,12 +848,11 @@ def hook_EqualSid(ql: Qiling, address: int, params):
 #   [in, optional] PVOID           CallbackContext,
 #   [out]          PREGHANDLE      RegHandle
 # );
-# @winsdkapi(cc=STDCALL, params={
-#     'ProviderId' : LPCGUID,
-#     'EnableCallback' : PENABLECALLBACK,
-#     'CallbackContext' : PVOID,
-#     'RegHandle' : PREGHANDLE
-# })
-# def hook_EventRegister(ql:Qiling, address: int, params):
-# TODO:
-# PENABLECALLBACK, PREGHANDLE is not defined in this framework.
+@winsdkapi(cc=STDCALL, params={
+    'ProviderId' : LPCGUID,
+    'EnableCallback' : PENABLECALLBACK,
+    'CallbackContext' : PVOID,
+    'RegHandle' : PREGHANDLE
+})
+def hook_EventRegister(ql:Qiling, address: int, params):
+    return STATUS_SUCCESS

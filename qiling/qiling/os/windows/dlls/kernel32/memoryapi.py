@@ -110,3 +110,4 @@ def hook_VirtualQuery(ql: Qiling, address: int, params):
         ql.mem.write_ptr(mbi + i * ql.arch.pointersize, v)
 
     return ql.arch.pointersize * len(values)
+

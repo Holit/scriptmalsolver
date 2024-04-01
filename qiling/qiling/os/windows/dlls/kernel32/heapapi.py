@@ -103,6 +103,7 @@ def hook_GetProcessHeap(ql: Qiling, address: int, params):
 def hook_HeapReAlloc(ql: Qiling, address: int, params):
     lpMem = params['lpMem']
     dwBytes = params['dwBytes']
+    
     #hHeap is ignored, check if needed
     #dwFlags is ignored, check if needed
     # Value	Meaning

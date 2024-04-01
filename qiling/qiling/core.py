@@ -54,7 +54,6 @@ class Qiling(QlCoreHooks, QlCoreStructs):
             print_copyright: bool = True
     ):
         """ Create a Qiling instance.
-
             For each argument or property, please refer to its help. e.g. help(Qiling.multithread)
         """
 

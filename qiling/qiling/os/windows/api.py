@@ -161,3 +161,17 @@ REFIID                      = POINTER
 REGSAM                      = POINTER
 UINT_PTR                    = POINTER
 ULONG_PTR                   = POINTER
+
+PIO_APC_ROUTINE                     = POINTER
+PFILE_NETWORK_OPEN_INFORMATION      = POINTER
+PIO_STATUS_BLOCK                    = POINTER
+PENABLECALLBACK                     = POINTER
+PREGHANDLE                          = POINTER 
+PTRACE_GUID_REGISTRATION            = POINTER
+PTRACEHANDLE                        = POINTER
+
+# unsure, check https://learn.microsoft.com/zh-cn/windows/win32/api/evntrace/nc-evntrace-wmidprequest
+WMIDPREQUEST                        = POINTER   
+
+# enum type: https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/ne-wdm-_key_information_class
+KEY_INFORMATION_CLASS               = DWORD 

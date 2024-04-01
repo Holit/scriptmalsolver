@@ -478,20 +478,20 @@ def hook_CsrGetProcessId(ql: Qiling, address: int, params):
 #   [in]            ULONG            BufferSize,
 #   [in]            BOOLEAN          Asynchronous
 # );
-# @winsdkapi(cc=STDCALL, params={
-#     'KeyHandle'       : HANDLE,
-#     'Event'           : HANDLE,
-#     'ApcRoutine'      : PIO_APC_ROUTINE,
-#     'ApcContext'      : PVOID,
-#     'IoStatusBlock'   : PIO_STATUS_BLOCK,
-#     'CompletionFilter': ULONG,
-#     'WatchTree'       : BOOLEAN,
-#     'Buffer'          : PVOID,
-#     'BufferSize'      : ULONG,
-#     'Asynchronous'    : BOOLEAN
-# })
-# def hook_ZwNotifyChangeKey(ql: Qiling, address: int, params):
-#     return STATUS_SUCCESS
+@winsdkapi(cc=STDCALL, params={
+    'KeyHandle'       : HANDLE,
+    'Event'           : HANDLE,
+    'ApcRoutine'      : PIO_APC_ROUTINE,
+    'ApcContext'      : PVOID,
+    'IoStatusBlock'   : PIO_STATUS_BLOCK,
+    'CompletionFilter': ULONG,
+    'WatchTree'       : BOOLEAN,
+    'Buffer'          : PVOID,
+    'BufferSize'      : ULONG,
+    'Asynchronous'    : BOOLEAN
+})
+def hook_ZwNotifyChangeKey(ql: Qiling, address: int, params):
+    return STATUS_SUCCESS
 
 # void ReleaseSRWLockExclusive(
 #   PSRWLOCK SRWLock
@@ -529,6 +529,7 @@ def hook_RtlReleaseSRWLockExclusive(ql: Qiling, address: int, params):
     'EaLength'          : ULONG
 })
 def hook_ZwCreateFile(ql: Qiling, address: int, params):
+    # reference to kernel32.CreateFileW
     return STATUS_SUCCESS
 
 # undocumented
@@ -543,6 +544,7 @@ def hook_ZwCreateFile(ql: Qiling, address: int, params):
     'Address' : PVOID,
     'Timeout' : PLARGE_INTEGER
 })
+# Crtical, this function has been called with error for 82+39 times
 def hook_ZwWaitForAlertByThreadId(ql: Qiling, address: int, params):
     return STATUS_SUCCESS
 
@@ -573,3 +575,5 @@ def hook_ZwQueryKey(ql: Qiling, address: int, params):
 })
 def hook_ZwQueryAttributesFile(ql: Qiling, address: int, params):
     return STATUS_SUCCESS
+
+#RtlInitializeCriticalSection
