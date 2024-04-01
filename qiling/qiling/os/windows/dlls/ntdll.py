@@ -466,3 +466,110 @@ def hook_CsrGetProcessId(ql: Qiling, address: int, params):
 # RegisterTraceGuidsW	kernelbase
 # EventRegister	kernelbase
 
+# NTSYSAPI NTSTATUS ZwNotifyChangeKey(
+#   [in]            HANDLE           KeyHandle,
+#   [in, optional]  HANDLE           Event,
+#   [in, optional]  PIO_APC_ROUTINE  ApcRoutine,
+#   [in, optional]  PVOID            ApcContext,
+#   [out]           PIO_STATUS_BLOCK IoStatusBlock,
+#   [in]            ULONG            CompletionFilter,
+#   [in]            BOOLEAN          WatchTree,
+#   [out, optional] PVOID            Buffer,
+#   [in]            ULONG            BufferSize,
+#   [in]            BOOLEAN          Asynchronous
+# );
+# @winsdkapi(cc=STDCALL, params={
+#     'KeyHandle'       : HANDLE,
+#     'Event'           : HANDLE,
+#     'ApcRoutine'      : PIO_APC_ROUTINE,
+#     'ApcContext'      : PVOID,
+#     'IoStatusBlock'   : PIO_STATUS_BLOCK,
+#     'CompletionFilter': ULONG,
+#     'WatchTree'       : BOOLEAN,
+#     'Buffer'          : PVOID,
+#     'BufferSize'      : ULONG,
+#     'Asynchronous'    : BOOLEAN
+# })
+# def hook_ZwNotifyChangeKey(ql: Qiling, address: int, params):
+#     return STATUS_SUCCESS
+
+# void ReleaseSRWLockExclusive(
+#   PSRWLOCK SRWLock
+# );
+@winsdkapi(cc=STDCALL, params={
+    'SRWLock' : PSRWLOCK
+})
+def hook_RtlReleaseSRWLockExclusive(ql: Qiling, address: int, params):
+    return
+
+# NTSYSAPI NTSTATUS ZwCreateFile(
+#   [out]          PHANDLE            FileHandle,
+#   [in]           ACCESS_MASK        DesiredAccess,
+#   [in]           POBJECT_ATTRIBUTES ObjectAttributes,
+#   [out]          PIO_STATUS_BLOCK   IoStatusBlock,
+#   [in, optional] PLARGE_INTEGER     AllocationSize,
+#   [in]           ULONG              FileAttributes,
+#   [in]           ULONG              ShareAccess,
+#   [in]           ULONG              CreateDisposition,
+#   [in]           ULONG              CreateOptions,
+#   [in, optional] PVOID              EaBuffer,
+#   [in]           ULONG              EaLength
+# );
+@winsdkapi(cc=STDCALL, params={
+    'FileHandle'        : PHANDLE,
+    'DesiredAccess'     : ACCESS_MASK,
+    'ObjectAttributes'  : POBJECT_ATTRIBUTES,
+    'IoStatusBlock'     : PIO_STATUS_BLOCK,
+    'AllocationSize'    : PLARGE_INTEGER,
+    'FileAttributes'    : ULONG,
+    'ShareAccess'       : ULONG,
+    'CreateDisposition' : ULONG,
+    'CreateOptions'     : ULONG,
+    'EaBuffer'          : PVOID,
+    'EaLength'          : ULONG
+})
+def hook_ZwCreateFile(ql: Qiling, address: int, params):
+    return STATUS_SUCCESS
+
+# undocumented
+# NTSYSCALLAPI
+# NTSTATUS
+# NTAPI
+# ZwWaitForAlertByThreadId(
+#     _In_ PVOID Address,
+#     _In_opt_ PLARGE_INTEGER Timeout
+#     );
+@winsdkapi(cc=STDCALL, params={
+    'Address' : PVOID,
+    'Timeout' : PLARGE_INTEGER
+})
+def hook_ZwWaitForAlertByThreadId(ql: Qiling, address: int, params):
+    return STATUS_SUCCESS
+
+# NTSYSAPI NTSTATUS ZwQueryKey(
+#   [in]            HANDLE                KeyHandle,
+#   [in]            KEY_INFORMATION_CLASS KeyInformationClass,
+#   [out, optional] PVOID                 KeyInformation,
+#   [in]            ULONG                 Length,
+#   [out]           PULONG                ResultLength
+# );
+@winsdkapi(cc=STDCALL, params={
+    'KeyHandle'          : HANDLE,
+    'KeyInformationClass': KEY_INFORMATION_CLASS,
+    'KeyInformation'     : PVOID,
+    'Length'             : ULONG,
+    'ResultLength'       : PULONG
+})
+def hook_ZwQueryKey(ql: Qiling, address: int, params):
+    return STATUS_SUCCESS
+
+# NTSYSAPI NTSTATUS ZwQueryFullAttributesFile(
+#   [in]  POBJECT_ATTRIBUTES             ObjectAttributes,
+#   [out] PFILE_NETWORK_OPEN_INFORMATION FileInformation
+# );
+@winsdkapi(cc=STDCALL, params={
+    'ObjectAttributes' : POBJECT_ATTRIBUTES,
+    'FileInformation'   : PFILE_NETWORK_OPEN_INFORMATION
+})
+def hook_ZwQueryAttributesFile(ql: Qiling, address: int, params):
+    return STATUS_SUCCESS

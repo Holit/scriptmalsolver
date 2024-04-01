@@ -2,8 +2,14 @@ import json
 import urllib.request as ur
 import random
 class bingWallpaperHelper(object):
-
+    '''
+    获取bing壁纸的工具类
+    '''
+    @staticmethod
     def GetWallpaper(self):
+        '''
+        获取bing壁纸的url
+        '''
         url=r'http://cn.bing.com/HPImageArchive.aspx?format=js&idx=0&n=2'
         headers={
             'User-Agent': 'Mozilla / 4.0(compatible;MSIE6.0;Windows NT 5.1)'
@@ -37,9 +43,27 @@ def compute_crc32(file_path):
 def get_runtime_folder():
     '''
     获取运行时文件夹
+    'E:\\Projects\\scriptmalsolver\\src\\web\\backend'
     '''
     import os
     dir = os.path.split(__file__)[0]
     basedir = os.path.split(dir)[0]
     return basedir
 
+def test_qiling(request):
+    '''
+    测试qiling组件可用性
+    '''
+    argv = [r'E:\Projects\scriptmalsolver\rootfs\x8664_windows\bin\hello.exe']
+    rootfs = r'E:\Projects\scriptmalsolver\rootfs\x8664_windows'
+    #verbose = qiling.QL_VERBOSE.DEBUG
+    ql = qiling.Qiling(argv=argv, rootfs=rootfs, log_file = "log_qiling.log", verbose = 4)
+    #ql = qiling.Qiling(argv=argv, rootfs=rootfs)
+    ql.run()
+    return JsonResponse({'result' : 'OK'})
+
+from django.http import HttpResponse
+from django.shortcuts import render
+
+def HttpErrorPage(request, statusCode, msg):
+    return render(request, 'error.html', {'statusCode': statusCode, 'msg': msg})

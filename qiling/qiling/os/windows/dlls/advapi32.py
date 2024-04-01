@@ -840,3 +840,20 @@ def hook_EqualSid(ql: Qiling, address: int, params):
 
     # return sid1 == sid2
     return 0
+
+
+# ULONG EVNTAPI EventRegister(
+#   [in]           LPCGUID         ProviderId,
+#   [in, optional] PENABLECALLBACK EnableCallback,
+#   [in, optional] PVOID           CallbackContext,
+#   [out]          PREGHANDLE      RegHandle
+# );
+# @winsdkapi(cc=STDCALL, params={
+#     'ProviderId' : LPCGUID,
+#     'EnableCallback' : PENABLECALLBACK,
+#     'CallbackContext' : PVOID,
+#     'RegHandle' : PREGHANDLE
+# })
+# def hook_EventRegister(ql:Qiling, address: int, params):
+# TODO:
+# PENABLECALLBACK, PREGHANDLE is not defined in this framework.

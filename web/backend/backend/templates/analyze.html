@@ -178,6 +178,8 @@
   <div class="container-fluid">
     <div class="row">
       <script src="{%static 'js\analyze_sidebar.js' %}"></script>
+      
+      <form>
       <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
         <div class="position-sticky pt-3 sidebar-sticky">
           <h6
@@ -244,7 +246,8 @@
           <h4
             class="sidebar-heading d-flex justify-content-between align-items-right px-3 mt-4 mb-1 text-muted text-uppercase">
             <span>
-              <button type="button" class="btn btn-primary btn-lg align-items-right ">执行分析</button>
+
+              <button type="submit" class="btn btn-primary btn-lg align-items-right">执行分析</button>
             </span>
 
           </h4>
@@ -252,8 +255,7 @@
       </nav>
 
       <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <form>
-          <div id="staticinfo-page" class="page">
+        <div id="staticinfo-page" class="page">
 
             <div
               class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
@@ -270,29 +272,29 @@
                 <tbody>
                   <tr>
                     <th>文件名</td>
-                    <td>{{ info.general_info.filename }}</td>
+                    <td>{{ general_info.filename }}</td>
                   </tr>
                   <tr>
                     <th>判定结果:</th>
-                    <td>{{ info.general_info.verdict }}</td>
+                    <td>{{ general_info.verdict }}</td>
                   </tr>
                   <tr>
                     <th>威胁情况:</th>
-                    <td>{{ info.general_info.threats }}</td>
+                    <td>{{ general_info.threats }}</td>
                   </tr>
                   <tr>
                     <th>分析时间:</th>
-                    <td>{{ info.general_info.analysis_Time }}</td>
+                    <td>{{ general_info.analysis_Time }}</td>
                   </tr>
                   <tr>
                     <th>目标操作系统:</th>
-                    <td>{{ info.general_info.tagret_os }}</td>
+                    <td>{{ general_info.tagret_os }}</td>
                   </tr>
                   <tr>
                     <th>标签:</th>
                     <td>
                       <ul>
-                        {%for tag in info.general_info.tags%}
+                        {%for tag in general_info.tags%}
                         <li>{{ tag }}</li>
                         {%endfor%}
                       </ul>
@@ -300,47 +302,46 @@
                   </tr>
                   <tr>
                     <th>MIME类型:</th>
-                    <td>{{ info.general_info.MIME }}</td>
+                    <td>{{ general_info.MIME }}</td>
                   </tr>
                   <tr>
                     <th>大小:</th>
-                    <td>{{ info.general_info.size }}</td>
+                    <td>{{ general_info.size }}</td>
                   </tr>
                   <tr>
                     <th>上传时间:</th>
-                    <td>{{ info.general_info.time }}</td>
+                    <td>{{ general_info.time }}</td>
                   </tr>
                   <tr>
                     <th>CRC32:</th>
-                    <td>{{ info.general_info.hash.CRC32 }}</td>
+                    <td>{{ general_info.hash.CRC32 }}</td>
                   </tr>
                   <tr>
                     <th>CRC64:</th>
-                    <td>{{ info.general_info.hash.CRC64 }}</td>
+                    <td>{{ general_info.hash.CRC64 }}</td>
                   </tr>
                   <tr>
                     <th>SHA256:</th>
-                    <td>{{ info.general_info.hash.SHA256 }}</td>
+                    <td>{{ general_info.hash.SHA256 }}</td>
                   </tr>
                   <tr>
                     <th>SHA1:</th>
-                    <td>{{ info.general_info.hash.SHA1 }}</td>
+                    <td>{{ general_info.hash.SHA1 }}</td>
                   </tr>
                   <tr>
                     <th>BLAKE2sp:</th>
-                    <td>{{ info.general_info.hash.BLAKE2sp }}</td>
+                    <td>{{ general_info.hash.BLAKE2sp }}</td>
                   </tr>
                   <tr>
                     <th>XXH64:</th>
-                    <td>{{ info.general_info.hash.XXH64 }}</td>
+                    <td>{{ general_info.hash.XXH64 }}</td>
 
                   </tr>
                 </tbody>
               </table>
             </div>
 
-          </div>
-
+        </div>
             <!-- 操作系统页面内容 -->
             <div id="os-page" class="page hidden">
               <div
@@ -350,15 +351,47 @@
               <p class="lead">在此处指定目标所要运行的操作系统及其细分版本</p>
               <fieldset class="mb-3">
                 <legend>目标操作系统</legend>
-                <!-- 需要在此处返回操作系统支持，通过支持不同的roofts允许运行不同版本的操作系统。 -->
+                {%for item in supported_rootfs %}
                 <div class="form-check">
-                  <input type="radio" name="radios" class="form-check-input" id="exampleRadio1">
-                  <label class="form-check-label" for="exampleRadio1">Windows 10</label>
+                  <input type="radio" name="rootfsRadio{{item.index}}" class="form-check-input" id="rootfsRadio{{item.index}}">
+                  <label class="form-check-label" for="rootfsRadio{{item.index}}">{{item.name}}</label>
                 </div>
-                <div class="form-check">
-                  <input type="radio" name="radios" class="form-check-input" id="exampleRadio2">
-                  <label class="form-check-label" for="exampleRadio2">Windows 7</label>
-                  </div> 
+                {%endfor%}
+                <legend>操作系统属性</legend>
+                  <!-- [SYSTEM]项 -->
+                  <div class="mb-3">
+                    <label for="majorVersionInput" class="form-label">Windows操作系统的主要版本号</label>
+                    <input type="number" class="form-control" id="majorVersionInput" >
+                    <div id="majorVersionHelp" class="form-text">majorVersion</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="minorVersionInput" class="form-label">Windows操作系统的次要版本号</label>
+                    <input type="number" class="form-control" id="minorVersionInput" >
+                    <div id="minorVersionHelp" class="form-text">minorVersion</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="productTypeInput" class="form-label">操作系统的类型</label>
+                    <input type="number" class="form-control" id="productTypeInput" >
+                    <div id="productTypeHelp" class="form-text">productType</div>
+                  </div>
+                  <!-- 遍历support_lang_id
+                  这里可能要简化，因为全变量表很长，会导致加载变慢 -->
+                  <div class="mb-3">
+                    <label for="languageSelect" class="form-label">系统所使用的语言的标识码</label>
+                    <select class="form-select" id="languageSelect">
+                      <option selected="0x0804">0x0804 - Chinese (Simplified), People's Republic of China(zh-CN), Release A</option>
+                      {%for item in supported_lang_id %}
+                      <option value={{item.value}}>{{item.desc}}</option>
+                      {%endfor%}
+                    </select>
+                    <div id="languageHelp" class="form-text">language</div>
+                  </div>
+                  <div class="mb-3">
+                    <label for="VER_SERVICEPACKMAJORInput" class="form-label">系统安装的主要服务包的版本号</label>
+                    <input type="number" class="form-control" id="VER_SERVICEPACKMAJORInput" >
+                    <div id="VER_SERVICEPACKMAJORHelp" class="form-text">VER_SERVICEPACKMAJOR</div>
+                  </div>
+
               </fieldset>
             </div>
 
@@ -369,15 +402,52 @@
                 <h1 class="h2">运行时要求</h1>
               </div>
               <p class="lead">配置要模拟的运行时变量</p>
+              <legend>代码位置</legend>
+              <fieldset>
+                
+                <div class="mb-3">
+                  <label for="ram_sizeInput" class="form-label">内存大小</label>
+                  <input type="text" class="form-control" id="ram_sizeInput" >
+                  <div id="ram_sizeHelp" class="form-text">ram_size</div>
+                </div>
+                <div class="mb-3">
+                  <label for="entry_pointInput" class="form-label">入口点</label>
+                  <input type="text" class="form-control" id="entry_pointInput" >
+                  <div id="entry_pointHelp" class="form-text">entry_point</div>
+                </div>
+              </fieldset>
             </div>
 
               <!-- 用户和环境变量页面内容 -->
+              <!-- username = Qiling
+              computername = qilingpc
+              current_path = C:\ -->
             <div id="userenv-page" class="page hidden">
               <div
                 class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2">用户和环境变量</h1>
               </div>
               <p class="lead">配置要模拟的用户和有关的环境变量及其值</p>
+              <fieldset>
+                <legend>用户和计算机名</legend>
+                <div class="mb-3">
+                  <label for="usernameInput" class="form-label">用户名</label>
+                  <input type="text" class="form-control" id="usernameInput" >
+                  <div id="usernameHelp" class="form-text">username</div>
+                </div>
+                <div class="mb-3">
+                  <label for="computernameInput" class="form-label">计算机名</label>
+                  <input type="text" class="form-control" id="computernameInput" >
+                  <div id="computernameHelp" class="form-text">computername</div>
+                </div>
+                <legend>程序的启动路径</legend>
+                <div class="mb-3">
+                  <label for="current_pathInput" class="form-label">当前路径</label>
+                  <input type="text" class="form-control" id="current_pathInput" >
+                  <div id="current_pathHelp" class="form-text">current_path</div>
+                </div>
+
+              </fieldset>
             </div>
 
               <!-- 硬件配置页面内容 -->
@@ -387,6 +457,83 @@
                 <h1 class="h2">硬件配置</h1>
               </div>
               <p class="lead">在此处指定要模拟的计算机硬件列表</p>
+              <fieldset>
+                
+                <!-- 
+                systemdrive = C:\
+                windir = Windows
+                number_processors = 5
+                dns_response_ip = 10.20.30.40
+
+                name = Volume1
+                serial_number = 3224010732
+                type = NTFS
+                sectors_per_cluster = 10
+                bytes_per_sector = 512
+                number_of_free_clusters = 12345
+                number_of_clusters = 65536 -->
+                <legend>处理器</legend>
+                <div class="mb-3">
+                  <label for="number_processorsInput" class="form-label">处理器核心数</label>
+                  <input type="number" class="form-control" id="number_processorsInput" >
+                  <div id="number_processorsHelp" class="form-text">number_processors</div>
+                </div>
+                <legend>系统驱动器</legend>
+                <div class="mb-3">
+                  <label for="systemdriveInput" class="form-label">系统驱动器</label>
+                  <input type="text" class="form-control" id="systemdriveInput" >
+                  <div id="systemdriveHelp" class="form-text">systemdrive</div>
+                </div>
+                <div class="mb-3">
+                  <label for="windirInput" class="form-label">Windows目录</label>
+                  <input type="text" class="form-control" id="windirInput" >
+                  <div id="windirHelp" class="form-text">windir</div>
+                </div>
+                <legend>网络</legend>
+                <div class="mb-3">
+                  <label for="dns_response_ipInput" class="form-label">DNS响应IP</label>
+                  <input type="text" class="form-control" id="dns_response_ipInput" >
+                  <div id="dns_response_ipHelp" class="form-text">dns_response_ip</div>
+                </div>
+                <legend>磁盘</legend>
+                <div class="mb-3">
+                  <label for="nameInput" class="form-label">卷名</label>
+                  <input type="text" class="form-control" id="nameInput" >
+                  <div id="nameHelp" class="form-text">name</div>
+                </div>
+                <div class="mb-3">
+                  <label for="serial_numberInput" class="form-label
+                  ">序列号</label>
+                  <input type="number" class="form-control" id="serial_numberInput" >
+                  <div id="serial_numberHelp" class="form-text">serial_number</div>
+                </div>
+                <div class="mb-3">
+                  <label for="typeInput" class="form-label">类型</label>
+                  <input type="text" class="form-control" id="typeInput" >
+                  <div id="typeHelp" class="form-text">type</div>
+                </div>
+                <div class="mb-3">
+                  <label for="sectors_per_clusterInput" class="form-label">每簇扇区数</label>
+                  <input type="number" class="form-control" id="sectors_per_clusterInput" >
+                  <div id="sectors_per_clusterHelp" class="form-text">sectors_per_cluster</div>
+                </div>
+                <div class="mb-3">
+                  <label for="bytes_per_sectorInput" class="form-label">每扇区字节数</label>
+                  <input type="number" class="form-control" id="bytes_per_sectorInput" >
+                  <div id="bytes_per_sectorHelp" class="form-text">bytes_per_sector</div>
+                </div>
+                <div class="mb-3">
+                  <label for="number_of_free_clustersInput" class="form-label">空闲簇数</label>
+                  <input type="number" class="form-control" id="number_of_free_clustersInput" >
+                  <div id="number_of_free_clustersHelp" class="form-text">number_of_free_clusters</div>
+                </div>
+                <div class="mb-3">
+                  <label for="number_of_clustersInput" class="form-label">簇数</label>
+                  <input type="number" class="form-control" id="number_of_clustersInput" >
+                  <div id="number_of_clustersHelp" class="form-text">number_of_clusters</div>
+                </div>
+
+              </fieldset>
             </div>
 
               <!-- 操作系统详细配置页面内容 -->
@@ -396,6 +543,88 @@
                 <h1 class="h2">操作系统详细配置</h1>
               </div>
               <p class="lead">在此处指定详细的操作系统参数</p>
+              <fieldset>
+                <legend>32位系统地址详情</legend>
+                <div class="mb-3">
+                  <label for="heap_addressInput" class="form-label">堆的起始地址</label>
+                  <input type="" class="form-control" id="heap_addressInput" >
+                  <div id="heap_addressHelp" class="form-text">heap_address</div>
+                </div>
+                <div class="mb-3">
+                  <label for="heap_sizeInput" class="form-label">堆的大小</label>
+                  <input type="text" class="form-control" id="heap_sizeInput" >
+                  <div id="heap_sizeHelp" class="form-text">heap_size</div>
+                </div>
+                <div class="mb-3">
+                  <label for="stack_addressInput" class="form-label">栈的起始地址</label>
+                  <input type="text" class="form-control" id="stack_addressInput" >
+                  <div id="stack_addressHelp" class="form-text">stack_address</div>
+                </div>
+                <div class="mb-3">
+                  <label for="stack_sizeInput" class="form-label">栈的大小</label>
+                  <input type="text" class="form-control" id="stack_sizeInput" >
+                  <div id="stack_sizeHelp" class="form-text">stack_size</div>
+                </div>
+                <div class="mb-3">
+                  <label for="image_addressInput" class="form-label">镜像的起始地址</label>
+                  <input type="text" class="form-control" id="image_addressInput" >
+                  <div id="image_addressHelp" class="form-text">image_address</div>
+                </div>
+                <div class="mb-3">
+                  <label for="dll_addressInput" class="form-label">dll的起始地址</label>
+                  <input type="text" class="form-control" id="dll_addressInput" >
+                  <div id="dll_addressHelp" class="form-text">dll_address</div>
+                </div>
+                <div class="mb-3">
+                  <label for="entry_pointInput" class="form-label">入口点地址</label>
+                  <input type="text" class="form-control" id="entry_pointInput" >
+                  <div id="entry_pointHelp" class="form-text">entry_point</div>
+                <div class="mb-3">
+                  <label for="KI_USER_SHARED_DATAInput" class="form-label">KI_USER_SHARED_DATA地址</label>
+                  <input type="text" class="form-control" id="KI_USER_SHARED_DATAInput" >
+                  <div id="KI_USER_SHARED_DATAHelp" class="form-text">KI_USER_SHARED_DATA</div>
+                </div>
+                <legend>64位系统地址详情</legend>
+                <div class="mb-3">
+                  <label for="heap_address64Input" class="form-label">堆的起始地址</label>
+                  <input type="text" class="form-control" id="heap_address64Input" >
+                  <div id="heap_address64Help" class="form-text">heap_address</div>
+                </div>
+                <div class="mb-3">
+                  <label for="heap_size64Input" class="form-label">堆的大小</label>
+                  <input type="text" class="form-control" id="heap_size64Input" >
+                  <div id="heap_size64Help" class="form-text">heap_size</div>
+                </div>
+                <div class="mb-3">
+                  <label for="stack_address64Input" class="form-label">栈的起始地址</label>
+                  <input type="text" class="form-control" id="stack_address64Input" >
+                  <div id="stack_address64Help" class="form-text">stack_address</div>
+                </div>
+                <div class="mb-3">
+                  <label for="stack_size64Input" class="form-label">栈的大小</label>
+                  <input type="text" class="form-control" id="stack_size64Input" >
+                  <div id="stack_size64Help" class="form-text">stack_size</div>
+                </div>
+                <div class="mb-3">
+                  <label for="image_address64Input" class="form-label">镜像的起始地址</label>
+                  <input type="text" class="form-control" id="image_address64Input" >
+                  <div id="image_address64Help" class="form-text">image_address</div>
+                </div>
+                <div class="mb-3">
+                  <label for="dll_address64Input" class="form-label">dll的起始地址</label>
+                  <input type="text" class="form-control" id="dll_address64Input" >
+                  <div id="dll_address64Help" class="form-text">dll_address</div>
+                </div>
+                <div class="mb-3">
+                  <label for="entry_point64Input" class="form-label">入口点地址</label>
+                  <input type="text" class="form-control" id="entry_point64Input" >
+                  <div id="entry_point64Help" class="form-text">entry_point</div>
+                <div class="mb-3">
+                  <label for="KI_USER_SHARED_DATA64Input" class="form-label">KI_USER_SHARED_DATA地址</label>
+                  <input type="text" class="form-control" id="KI_USER_SHARED_DATA64Input" >
+                  <div id="KI_USER_SHARED_DATA64Help" class="form-text">KI_USER_SHARED_DATA</div>
+                </div>
+              </fieldset>
             </div>
 
               <!-- qiling选项页面内容 -->
@@ -405,6 +634,36 @@
                 <h1 class="h2">qiling选项</h1>
               </div>
               <p class="lead">在此处指定虚拟执行参数</p>
+              <legend>启动配置</legend>
+              <fieldset>
+                
+              <!-- argv
+              env
+
+              multithread
+              stop -->
+                <div class="mb-3">
+                  <label for="argvInput" class="form-label">命令行参数</label>
+                  <input type="text" class="form-control" id="argvInput" >
+                  <div id="argvHelp" class="form-text">argv</div>
+                </div>
+                <div class="mb-3">
+                  <label for="envInput" class="form-label">环境变量</label>
+                  <input type="text" class="form-control" id="envInput" >
+                  <div id="envHelp" class="form-text">env</div>
+                </div>
+
+                <div class="mb-3 form-check form-switch">
+                  <input class="form-check-input" type="checkbox" role="switch" id="multithreadCheck" checked="">
+                  <label class="form-check-label" for="multithreadCheck">多线程</label>
+                </div>
+                <legend>指示退出方式</legend>
+                <select class="form-select" id="stopSelect">
+                  <option selected="0">0 - None</option>
+                  <option value="1">1 - STACK_POINTER</option>
+                  <option value="2">2 - EXIT_TRAP</option>
+                </select>
+              </fieldset>
             </div>
 
               <!-- 增强选项页面内容 -->

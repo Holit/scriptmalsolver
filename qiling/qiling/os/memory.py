@@ -722,6 +722,57 @@ class QlMemoryHeap:
 
         chunk.inuse = True
         return chunk.address
+    
+    def realloc(self, ptr: int, size: int) -> int:
+        """Reallocate heap memory.
+
+        Args:
+            ptr: pointer to the previously allocated memory block
+            size: requested allocation size in bytes
+
+        Returns:
+            The address of the newly allocated memory chunk after reallocation, or 0 if reallocation has failed
+        """
+
+        # Handle the case where ptr is NULL
+        if ptr == 0:
+            return self.alloc(size)
+
+        # Handle the case where size is zero (freeing the memory block)
+        if size == 0:
+            return self.free(ptr)
+
+        # Find the chunk associated with the given pointer
+        target_chunk = None
+        for chunk in self.chunks:
+            # This may lead to some error, after test, we can modify this if chunk is contained this ptr
+            if chunk.address == ptr:
+                target_chunk = chunk
+                break
+
+        if target_chunk is None:
+            # The pointer does not match any allocated memory block
+            return 0
+
+        # Attempt to resize the existing chunk
+        if size <= target_chunk.size:
+            # If the new size is smaller or equal to the current size,
+            # simply return the existing pointer
+            return ptr
+        else:
+            # Attempt to allocate a new chunk with the requested size
+            new_ptr = self.alloc(size)
+            if new_ptr == 0:
+                # Allocation failed, return 0
+                return 0
+
+            # Copy the data from the old chunk to the new chunk
+            # (You need to implement a function to copy memory blocks)
+
+            # Free the old chunk
+            self.free(ptr)
+
+            return new_ptr
 
     def size(self, addr: int) -> int:
         """Get the size of allocated memory chunk starting at a specific address.
