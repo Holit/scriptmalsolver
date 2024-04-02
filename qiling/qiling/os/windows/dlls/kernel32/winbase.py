@@ -9,7 +9,7 @@ import configparser
 from qiling import Qiling
 from qiling.exception import QlErrorNotImplemented
 from qiling.os.windows.api import *
-from qiling.os.windows.const import *
+from qiling.qiling.os.windows.consts.const import *
 from qiling.os.windows.fncc import *
 from qiling.os.windows.structs import make_os_version_info_ex
 from qiling.os.windows.utils import cmp

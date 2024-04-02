@@ -12,7 +12,7 @@ from qiling.os.windows.fncc import *
 from qiling.const import QL_ARCH
 from qiling.exception import *
 from qiling.os.const import *
-from qiling.os.windows.const import *
+from qiling.qiling.os.windows.consts.const import *
 from qiling.os.windows.handle import *
 from qiling.os.windows import structs
 from qiling.os.windows import utils

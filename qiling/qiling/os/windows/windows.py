@@ -19,7 +19,7 @@ from qiling.os.memory import QlMemoryHeap
 from qiling.os.os import QlOs
 from qiling.os.stats import QlWinStats
 
-from . import const
+from .consts import const
 from . import fncc
 from . import handle
 from . import thread

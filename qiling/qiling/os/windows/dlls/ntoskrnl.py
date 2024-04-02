@@ -8,7 +8,7 @@ from unicorn import UcError
 from qiling import Qiling
 from qiling.exception import QlErrorNotImplemented
 from qiling.os.windows.api import *
-from qiling.os.windows.const import *
+from qiling.qiling.os.windows.consts.const import *
 from qiling.os.windows.fncc import *
 from qiling.os.windows.structs import *
 from qiling.os.windows import utils

@@ -1,0 +1,78 @@
+<table aria-label="File Access Rights Constants" class="table table-sm margin-top-none">
+    <thead>
+    <tr>
+    <th style="text-align: left;">Constant/value</th>
+    <th style="text-align: left;">Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_ADD_FILE"></span><span id="file_add_file"></span><dl> <dt><strong>FILE_ADD_FILE</strong></dt> <dt>2</dt> </dl></td>
+    <td style="text-align: left;">For a directory, the right to create a file in the directory.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_ADD_SUBDIRECTORY"></span><span id="file_add_subdirectory"></span><dl> <dt><strong>FILE_ADD_SUBDIRECTORY</strong></dt> <dt>4</dt> </dl></td>
+    <td style="text-align: left;">For a directory, the right to create a subdirectory.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_ALL_ACCESS"></span><span id="file_all_access"></span><dl> <dt><strong>FILE_ALL_ACCESS</strong></dt> <dt></dt> </dl></td>
+    <td style="text-align: left;">All possible access rights for a file.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_APPEND_DATA"></span><span id="file_append_data"></span><dl> <dt><strong>FILE_APPEND_DATA</strong></dt> <dt>4</dt> </dl></td>
+    <td style="text-align: left;">For a file object, the right to append data to the file. (For local files, write operations will not overwrite existing data if this flag is specified without <strong>FILE_WRITE_DATA</strong>.) For a directory object, the right to create a subdirectory (<strong>FILE_ADD_SUBDIRECTORY</strong>).<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_CREATE_PIPE_INSTANCE"></span><span id="file_create_pipe_instance"></span><dl> <dt><strong>FILE_CREATE_PIPE_INSTANCE</strong></dt> <dt>4</dt> </dl></td>
+    <td style="text-align: left;">For a named pipe, the right to create a pipe.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_DELETE_CHILD"></span><span id="file_delete_child"></span><dl> <dt><strong>FILE_DELETE_CHILD</strong></dt> <dt>64 (0x40)</dt> </dl></td>
+    <td style="text-align: left;">For a directory, the right to delete a directory and all the files it contains, including read-only files.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_EXECUTE"></span><span id="file_execute"></span><dl> <dt><strong>FILE_EXECUTE</strong></dt> <dt>32 (0x20)</dt> </dl></td>
+    <td style="text-align: left;">For a native code file, the right to execute the file. This access right given to scripts may cause the script to be executable, depending on the script interpreter.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_LIST_DIRECTORY"></span><span id="file_list_directory"></span><dl> <dt><strong>FILE_LIST_DIRECTORY</strong></dt> <dt>1</dt> </dl></td>
+    <td style="text-align: left;">For a directory, the right to list the contents of the directory.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_READ_ATTRIBUTES"></span><span id="file_read_attributes"></span><dl> <dt><strong>FILE_READ_ATTRIBUTES</strong></dt> <dt>128 (0x80)</dt> </dl></td>
+    <td style="text-align: left;">The right to read file attributes.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_READ_DATA"></span><span id="file_read_data"></span><dl> <dt><strong>FILE_READ_DATA</strong></dt> <dt>1</dt> </dl></td>
+    <td style="text-align: left;">For a file object, the right to read the corresponding file data. For a directory object, the right to read the corresponding directory data.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_READ_EA"></span><span id="file_read_ea"></span><dl> <dt><strong>FILE_READ_EA</strong></dt> <dt>8</dt> </dl></td>
+    <td style="text-align: left;">The right to read extended file attributes.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_TRAVERSE"></span><span id="file_traverse"></span><dl> <dt><strong>FILE_TRAVERSE</strong></dt> <dt>32 (0x20)</dt> </dl></td>
+    <td style="text-align: left;">For a directory, the right to traverse the directory. By default, users are assigned the <strong>BYPASS_TRAVERSE_CHECKING</strong> <a href="/en-us/windows/desktop/SecAuthZ/privileges" data-linktype="absolute-path">privilege</a>, which ignores the <strong>FILE_TRAVERSE</strong> <a href="/en-us/windows/desktop/SecAuthZ/access-rights-and-access-masks" data-linktype="absolute-path">access right</a>. See the remarks in <a href="file-security-and-access-rights" data-linktype="relative-path">File Security and Access Rights</a> for more information.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_WRITE_ATTRIBUTES"></span><span id="file_write_attributes"></span><dl> <dt><strong>FILE_WRITE_ATTRIBUTES</strong></dt> <dt>256 (0x100)</dt> </dl></td>
+    <td style="text-align: left;">The right to write file attributes.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_WRITE_DATA"></span><span id="file_write_data"></span><dl> <dt><strong>FILE_WRITE_DATA</strong></dt> <dt>2</dt> </dl></td>
+    <td style="text-align: left;">For a file object, the right to write data to the file. For a directory object, the right to create a file in the directory (<strong>FILE_ADD_FILE</strong>).<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="FILE_WRITE_EA"></span><span id="file_write_ea"></span><dl> <dt><strong>FILE_WRITE_EA</strong></dt> <dt>16 (0x10)</dt> </dl></td>
+    <td style="text-align: left;">The right to write extended file attributes.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="STANDARD_RIGHTS_READ"></span><span id="standard_rights_read"></span><dl> <dt><strong>STANDARD_RIGHTS_READ</strong></dt> <dt></dt> </dl></td>
+    <td style="text-align: left;">Includes <strong>READ_CONTROL</strong>, which is the right to read the information in the file or directory object's security descriptor. This does not include the information in the SACL.<br></td>
+    </tr>
+    <tr>
+    <td style="text-align: left;"><span id="STANDARD_RIGHTS_WRITE"></span><span id="standard_rights_write"></span><dl> <dt><strong>STANDARD_RIGHTS_WRITE</strong></dt> <dt></dt> </dl></td>
+    <td style="text-align: left;">Same as <strong>STANDARD_RIGHTS_READ</strong>.<br></td>
+    </tr>
+    </tbody>
+    </table>

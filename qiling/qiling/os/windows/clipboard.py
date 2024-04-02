@@ -6,7 +6,7 @@
 
 from typing import TYPE_CHECKING, Optional
 
-from qiling.os.windows.const import *
+from qiling.qiling.os.windows.consts.const import *
 
 if TYPE_CHECKING:
     from qiling.os.windows.windows import QlOsWindows

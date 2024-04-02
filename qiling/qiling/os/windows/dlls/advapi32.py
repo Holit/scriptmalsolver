@@ -7,7 +7,7 @@ from typing import Callable, Tuple
 
 from qiling import Qiling
 from qiling.os.windows.api import *
-from qiling.os.windows.const import *
+from qiling.qiling.os.windows.consts.const import *
 from qiling.os.windows.fncc import *
 from qiling.os.windows.structs import *
 
@@ -855,4 +855,4 @@ def hook_EqualSid(ql: Qiling, address: int, params):
     'RegHandle' : PREGHANDLE
 })
 def hook_EventRegister(ql:Qiling, address: int, params):
-    return STATUS_SUCCESS
+    return ERROR_ACCESS_DENIED

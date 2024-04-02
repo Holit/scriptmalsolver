@@ -12,7 +12,7 @@ from qiling.os.windows.fncc import *
 from qiling.const import QL_ARCH
 from qiling.exception import *
 from qiling.os.const import *
-from qiling.os.windows.const import *
+from qiling.qiling.os.windows.consts.const import *
 from qiling.os.windows.handle import *
 from qiling.os.windows import structs
 from qiling.os.windows import utils
@@ -529,7 +529,20 @@ def hook_RtlReleaseSRWLockExclusive(ql: Qiling, address: int, params):
     'EaLength'          : ULONG
 })
 def hook_ZwCreateFile(ql: Qiling, address: int, params):
-    # reference to kernel32.CreateFileW
+    param_hFileHandle = params['FileHandle']
+    param_dwDesiredAccess = params['DesiredAccess']
+    param_dwCreationDisposition = params['CreateDisposition']
+    param_dwCreationOptions = params['CreateOptions']
+
+    perm_write = param_dwDesiredAccess & GENERIC_WRITE
+    perm_read  = param_dwDesiredAccess & GENERIC_READ
+    perm_exec = param_dwDesiredAccess & GENERIC_EXECUTE
+
+    handle = ql.os.handle_manager.get(param_hFileHandle)
+
+    if handle is None:
+        return ERROR_INVALID_HANDLE
+    
     return STATUS_SUCCESS
 
 # undocumented
@@ -546,6 +559,10 @@ def hook_ZwCreateFile(ql: Qiling, address: int, params):
 })
 # Crtical, this function has been called with error for 82+39 times
 def hook_ZwWaitForAlertByThreadId(ql: Qiling, address: int, params):
+    if(not ql.multithread):
+        # 如果未启用多线程，则返回错误
+        return STATUS_INVALID_THREAD
+    # TODO : refractor multi-thread construct, allows notify
     return STATUS_SUCCESS
 
 # NTSYSAPI NTSTATUS ZwQueryKey(
@@ -563,6 +580,8 @@ def hook_ZwWaitForAlertByThreadId(ql: Qiling, address: int, params):
     'ResultLength'       : PULONG
 })
 def hook_ZwQueryKey(ql: Qiling, address: int, params):
+    # due to incomplete registry implementation, this function failed.
+    return STATUS_REGISTRY_CORRUPT
     return STATUS_SUCCESS
 
 # NTSYSAPI NTSTATUS ZwQueryFullAttributesFile(
@@ -574,6 +593,7 @@ def hook_ZwQueryKey(ql: Qiling, address: int, params):
     'FileInformation'   : PFILE_NETWORK_OPEN_INFORMATION
 })
 def hook_ZwQueryAttributesFile(ql: Qiling, address: int, params):
+    return ERROR_FILE_NOT_FOUND
     return STATUS_SUCCESS
 
 #RtlInitializeCriticalSection

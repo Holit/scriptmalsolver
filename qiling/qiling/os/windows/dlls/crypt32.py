@@ -8,7 +8,7 @@ import base64
 from qiling import Qiling
 from qiling.exception import QlErrorNotImplemented
 from qiling.os.windows.api import *
-from qiling.os.windows.const import CRYPT_STRING_BASE64
+from qiling.qiling.os.windows.consts.const import CRYPT_STRING_BASE64
 from qiling.os.windows.fncc import *
 
 def _CryptStringToBinary(ql: Qiling, address: int, params) -> int:

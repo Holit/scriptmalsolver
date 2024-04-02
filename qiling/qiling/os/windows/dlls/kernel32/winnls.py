@@ -5,7 +5,7 @@
 
 from qiling import Qiling
 from qiling.os.windows.api import *
-from qiling.os.windows.const import *
+from qiling.qiling.os.windows.consts.const import *
 from qiling.os.windows.fncc import *
 
 # BOOL SetThreadLocale(

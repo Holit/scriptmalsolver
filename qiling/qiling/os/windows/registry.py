@@ -8,7 +8,7 @@ from Registry import Registry
 from typing import Any, MutableMapping, Optional, Tuple, Union
 
 from qiling import Qiling
-from qiling.os.windows.const import REG_TYPES
+from qiling.qiling.os.windows.consts.const import REG_TYPES
 from qiling.exception import *
 
 

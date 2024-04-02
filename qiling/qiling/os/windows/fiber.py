@@ -7,7 +7,7 @@ from typing import MutableMapping, Optional
 from qiling import Qiling
 from qiling.const import QL_ARCH
 from qiling.os.windows.api import PVOID
-from qiling.os.windows.const import ERROR_INVALID_PARAMETER
+from qiling.qiling.os.windows.consts.const import ERROR_INVALID_PARAMETER
 from qiling.os.windows.fncc import CDECL
 
 class Fiber:
