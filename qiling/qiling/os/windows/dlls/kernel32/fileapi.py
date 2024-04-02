@@ -12,7 +12,7 @@ from datetime import datetime
 from qiling import Qiling
 from qiling.exception import QlErrorNotImplemented
 from qiling.os.windows.api import *
-from qiling.qiling.os.windows.consts.const import *
+from qiling.os.windows.consts.const import *
 from qiling.os.windows.fncc import *
 from qiling.os.windows.handle import Handle
 from qiling.os.windows.structs import FILETIME, make_win32_find_data

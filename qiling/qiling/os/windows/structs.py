@@ -9,7 +9,7 @@ from enum import IntEnum
 from functools import lru_cache
 
 from qiling.os import struct
-from qiling.qiling.os.windows.consts.const import MAX_PATH
+from qiling.os.windows.consts.const import MAX_PATH
 from qiling.os.windows.handle import Handle
 from qiling.exception import QlErrorNotImplemented
 from .wdk_const import IRP_MJ_MAXIMUM_FUNCTION, PROCESSOR_FEATURE_MAX

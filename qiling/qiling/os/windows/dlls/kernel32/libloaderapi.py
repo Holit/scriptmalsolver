@@ -8,7 +8,7 @@ import os
 from qiling import Qiling
 from qiling.exception import QlErrorNotImplemented
 from qiling.os.windows.api import *
-from qiling.qiling.os.windows.consts.const import *
+from qiling.os.windows.consts.const import *
 from qiling.os.windows.fncc import *
 from qiling.os.windows.utils import has_lib_ext
 

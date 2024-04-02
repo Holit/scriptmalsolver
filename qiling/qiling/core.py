@@ -85,7 +85,7 @@ class Qiling(QlCoreHooks, QlCoreStructs):
         self._initial_sp = 0
         
         if(print_copyright):
-            print("Scriptmalsolver v0.0.1 dev0\n"
+            print("Scriptmalsolver v0.0.1 dev1\n"
             "Customzied Qiling Framework for Malware Analysis.\n"
             "This program is under development and should not be used for production.\n"
             "------------------------------------------------------------------------\n")

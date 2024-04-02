@@ -6,7 +6,7 @@
 from qiling import Qiling
 from qiling.exception import QlErrorNotImplemented
 from qiling.os.windows.api import *
-from qiling.qiling.os.windows.consts.const import TH32CS_SNAPPROCESS
+from qiling.os.windows.consts.const import TH32CS_SNAPPROCESS
 from qiling.os.windows.fncc import *
 
 # HANDLE CreateToolhelp32Snapshot(

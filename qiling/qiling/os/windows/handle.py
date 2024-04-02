@@ -6,7 +6,7 @@
 
 from typing import Any, MutableMapping, Optional
 
-from qiling.qiling.os.windows.consts.const import STD_ERROR_HANDLE, STD_INPUT_HANDLE, STD_OUTPUT_HANDLE
+from qiling.os.windows.consts.const import STD_ERROR_HANDLE, STD_INPUT_HANDLE, STD_OUTPUT_HANDLE
 
 class Handle:
     ID = 0xa0000000

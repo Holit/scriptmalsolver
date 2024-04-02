@@ -5,7 +5,7 @@
 
 from qiling import Qiling
 from qiling.os.windows.api import *
-from qiling.qiling.os.windows.consts.const import *
+from qiling.os.windows.consts.const import *
 from qiling.os.windows.fncc import *
 
 from qiling.os.windows.thread import QlWindowsThread, THREAD_STATUS

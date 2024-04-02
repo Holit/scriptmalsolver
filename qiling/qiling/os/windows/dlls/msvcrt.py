@@ -10,7 +10,7 @@ from qiling import Qiling
 from qiling.exception import QlErrorNotImplemented
 from qiling.os.const import *
 from qiling.os.windows.fncc import *
-from qiling.qiling.os.windows.consts.const import LOCALE
+from qiling.os.windows.consts.const import LOCALE
 from qiling.os.windows.handle import Handle
 
 # void __set_app_type (

@@ -10,8 +10,8 @@ from .ntsecuritycon import *
 from .commctrl import *
 
 # ERRORS CODE
-from .winerror import *
 # https://docs.microsoft.com/en-us/windows/win32/debug/system-error-codes--0-499-
+from .winerror import *
 # ERROR_SUCCESS = 0x0
 # ERROR_INVALID_FUNCTION = 0x1
 # ERROR_FILE_NOT_FOUND = 0x2

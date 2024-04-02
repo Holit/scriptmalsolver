@@ -7,7 +7,7 @@ from qiling import Qiling
 from qiling.os.windows.api import *
 from qiling.os.windows.fncc import *
 from qiling.os.windows.utils import cmp
-from qiling.qiling.os.windows.consts.const import *
+from qiling.os.windows.consts.const import *
 
 # BOOL GetStringTypeW(
 #   DWORD                         dwInfoType,

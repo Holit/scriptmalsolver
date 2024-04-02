@@ -5,7 +5,7 @@
 
 from qiling import Qiling
 from qiling.os.windows.api import *
-from qiling.qiling.os.windows.consts.const import *
+from qiling.os.windows.consts.const import *
 from qiling.os.windows.fncc import *
 
 # DWORD GetTimeZoneInformation(
